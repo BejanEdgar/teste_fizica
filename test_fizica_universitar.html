@@ -1,0 +1,162 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.tw{max-width:740px;padding:.5rem 0 3rem;font-family:var(--font-sans)}
+.th{padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:2px solid #1565C0}
+.th h1{font-size:17px;font-weight:500;color:var(--color-text-primary);letter-spacing:.8px;text-transform:uppercase}
+.th-meta{font-size:12.5px;color:var(--color-text-secondary);margin-top:5px}
+.section-hdr{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--color-text-secondary);margin:1.5rem 0 .75rem;padding-left:2px;border-left:3px solid #1565C0;padding-left:8px}
+.item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.1rem 1.25rem;margin-bottom:1rem;background:var(--color-background-primary);transition:border-color .2s}
+.item.graded-ok{border-color:#2e7d32!important}
+.item.graded-fail{border-color:#c62828!important}
+.ih{display:flex;align-items:center;gap:8px;margin-bottom:.65rem;flex-wrap:wrap}
+.inum{font-size:12px;font-weight:500;color:var(--color-text-secondary)}
+.bcalc{background:#1565C0;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.btf{background:#5c35b1;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.iq{font-size:13.5px;color:var(--color-text-primary);line-height:1.65;margin-bottom:.9rem}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:flex;align-items:flex-start;gap:8px;padding:6px 10px;border-radius:6px;cursor:pointer;border:0.5px solid transparent;transition:background .12s}
+.opt:hover{background:var(--color-background-secondary)}
+.opt.sel{background:rgba(21,101,192,0.08);border-color:#1565C0}
+.opt.good{background:rgba(46,125,50,0.1)!important;border-color:#2e7d32!important}
+.opt.bad{background:rgba(198,40,40,0.1)!important;border-color:#c62828!important}
+.opt input[type=radio]{margin-top:3px;accent-color:#1565C0;flex-shrink:0}
+.olabel{font-size:13px;color:var(--color-text-primary);line-height:1.5}
+.ifoot{margin-top:.75rem;border-top:0.5px solid var(--color-border-tertiary);padding-top:.55rem;display:flex;align-items:center;justify-content:space-between}
+.ipts{font-size:11.5px;color:var(--color-text-secondary)}
+.ifeed{font-size:12px;font-weight:500}
+.ifeed.ok{color:#2e7d32}
+.ifeed.fail{color:#c62828}
+.sbmt{display:flex;justify-content:center;margin-top:1.75rem}
+.sbmt button{padding:10px 40px;font-size:14px;font-weight:500;background:#1565C0;color:#fff;border:none;border-radius:var(--border-radius-md);cursor:pointer;letter-spacing:.3px}
+.sbmt button:hover{background:#1976D2}
+.sbmt button:disabled{background:#90a4ae;cursor:default}
+.sbar{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.9rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.2rem}
+.snum{font-size:30px;font-weight:500;color:#1565C0}
+.slabel{font-size:12.5px;color:var(--color-text-secondary)}
+.smsg{font-size:13px;color:var(--color-text-primary);margin-top:2px}
+</style>
+
+<h2 class="sr-only">Test interactiv de fizică universitară — 25 întrebări din mecanică, termodinamică, electromagnetism, oscilații și optică.</h2>
+
+<div class="tw">
+  <div class="th">
+    <h1>Test de fizică</h1>
+    <p class="th-meta">Guțuleac Leonid · Curs universitar &nbsp;|&nbsp; 25 itemi · Mecanică clasică, Termodinamică, Electromagnetism, Oscilații, Optică</p>
+  </div>
+  <div id="sbar" class="sbar" style="display:none">
+    <div class="snum" id="snum">0</div>
+    <div>
+      <div class="slabel">puncte din <span id="tpts"></span> posibile</div>
+      <div class="smsg" id="smsg"></div>
+    </div>
+  </div>
+  <div id="wrap"></div>
+  <div class="sbmt"><button id="btn" onclick="submit()">Verifică răspunsurile</button></div>
+</div>
+
+<script>
+const Q=[
+{s:'1. Bazele mecanicii clasice',type:'tf',text:'Accelerația unui punct material este invers proporțională cu masa acestuia (la forță constantă).',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'1. Bazele mecanicii clasice',type:'tf',text:'Accelerația normală a unui punct material este îndreptată spre centrul de curbură al traiectoriei.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'1. Bazele mecanicii clasice',type:'tf',text:'Lucrul mecanic al forței de greutate depinde de forma traiectoriei parcurse de corp.',opts:['Adevăr','Fals'],c:1,pts:4},
+{s:'1. Bazele mecanicii clasice',type:'mc',text:'Care din expresiile de mai jos reprezintă corect energia cinetică de rotație a unui corp rigid?',opts:['E<sub>rot</sub> = Iω','E<sub>rot</sub> = Iω²/2','E<sub>rot</sub> = mω²/2','E<sub>rot</sub> = mv²/2','E<sub>rot</sub> = I²ω/2'],c:1,pts:5},
+{s:'1. Bazele mecanicii clasice',type:'mc',text:'Care este unitatea de măsură a momentului de inerție în Sistemul Internațional (SI)?',opts:['kg·m/s','N·m','kg·m²','J/rad','kg/m²'],c:2,pts:5},
+{s:'1. Bazele mecanicii clasice',type:'calc',text:'O minge de masă <i>m</i> = 0,5 kg este aruncată vertical în sus cu viteza inițială <i>v</i>₀ = 20 m/s. Determinați înălțimea maximă atinsă de minge. (<i>g</i> = 10 m/s²)',opts:['<i>h</i> = 5 m','<i>h</i> = 10 m','<i>h</i> = 20 m','<i>h</i> = 40 m','<i>h</i> = 200 m'],c:2,pts:10},
+{s:'1. Bazele mecanicii clasice',type:'calc',text:'O platformă orizontală imobilă cu masa <i>M</i> = 240 kg se poate roti liber în jurul axei sale verticale care trece prin centrul ei. Pe marginea platformei stă un om cu masa <i>m</i> = 80 kg. Determinați viteza unghiulară ω a platformei, dacă omul va merge pe marginea ei cu viteza <i>v</i> = 2 m/s în raport cu platforma. Raza platformei <i>R</i> = 1 m; momentul de inerție al omului se calculează ca pentru un punct material.',opts:['ω = 0,6 s⁻¹','ω = 0,7 s⁻¹','ω = 0,5 s⁻¹','ω = 1 s⁻¹','ω = 0,8 s⁻¹'],c:4,pts:10},
+{s:'1. Bazele mecanicii clasice',type:'tf',text:'Momentul de inerție al unui sistem de corpuri față de o axă dată depinde de distribuția maselor față de acea axă.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'tf',text:'Energia internă a gazului ideal depinde numai de temperatură.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'tf',text:'Procesul izoterm al gazului ideal se desfășoară la volum constant.',opts:['Adevăr','Fals'],c:1,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'mc',text:'Care este numărul gradelor de libertate <i>i</i> pentru o moleculă diatomică rigidă?',opts:['<i>i</i> = 3','<i>i</i> = 4','<i>i</i> = 5','<i>i</i> = 6','<i>i</i> = 7'],c:2,pts:5},
+{s:'2. Fizica moleculară și termodinamica',type:'tf',text:'Tranziția unui sistem dintr-o stare de echilibru în alta printr-un șir de stări consecutive de neechilibru se numește proces de neechilibru.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'tf',text:'În procesul de conductivitate termică are loc un transport orientat al energiei interne din regiunile cu temperatură mai mare spre regiunile cu temperatură mai mică.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'calc',text:'Un gaz ideal monoatomic (<i>i</i> = 3) cu cantitatea ν = 2 mol este încălzit izocor de la <i>T</i>₁ = 300 K la <i>T</i>₂ = 400 K. Determinați cantitatea de căldură absorbită de gaz. (<i>R</i> = 8,31 J/(mol·K))',opts:['<i>Q</i> = 831 J','<i>Q</i> = 1662 J','<i>Q</i> = 2490 J','<i>Q</i> = 3324 J','<i>Q</i> = 4980 J'],c:2,pts:10},
+{s:'2. Fizica moleculară și termodinamica',type:'calc',text:'Se dă un amestec din două gaze cu același număr de grade de libertate <i>i</i>, cu masele molare <i>M</i>₁, <i>M</i>₂ și masele <i>m</i>₁, <i>m</i>₂. Determinați căldura specifică la presiune constantă <i>c<sub>p</sub></i> a amestecului. (<i>R</i> – constanta universală a gazelor)',opts:['c<sub>p</sub> = iR / [2(m₁+m₂)] · (m₁/M₁ + m₂/M₂)','c<sub>p</sub> = iR / [2(m₁+m₂)] · (m₁/M₂ + m₂/M₁)','c<sub>p</sub> = (i+2)R / (m₁+m₂) · (m₁/M₁ + m₂/M₂)','c<sub>p</sub> = (i+2)R / [2(m₁+m₂)] · (m₁/M₁ − m₂/M₂)','c<sub>p</sub> = (i+2)R / [2(m₁+m₂)] · (m₁/M₁ + m₂/M₂)'],c:4,pts:10},
+{s:'3. Electromagnetism',type:'tf',text:'Sarcina electrică a electronului este pozitivă.',opts:['Adevăr','Fals'],c:1,pts:4},
+{s:'3. Electromagnetism',type:'mc',text:'Legea lui Coulomb stabilește că forța de interacțiune electrostatică dintre două sarcini punctiforme este:',opts:['Direct proporțională cu distanța dintre ele','Invers proporțională cu distanța dintre ele','Invers proporțională cu pătratul distanței dintre ele','Direct proporțională cu suma sarcinilor','Independentă de mediul în care se află sarcinile'],c:2,pts:5},
+{s:'3. Electromagnetism',type:'calc',text:'Două sarcini electrice <i>q</i>₁ = <i>q</i>₂ = 2·10⁻⁶ C se află la distanța <i>r</i> = 0,1 m în vid. Determinați forța de interacțiune. (<i>k</i> = 9·10⁹ N·m²/C²)',opts:['<i>F</i> = 0,036 N','<i>F</i> = 0,36 N','<i>F</i> = 3,6 N','<i>F</i> = 36 N','<i>F</i> = 360 N'],c:2,pts:10},
+{s:'3. Electromagnetism',type:'tf',text:'Câmpul magnetic exercită forța Lorentz asupra sarcinilor electrice aflate în mișcare.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'3. Electromagnetism',type:'mc',text:'Ce fenomen descrie apariția unui curent electric indus într-un circuit aflat într-un câmp magnetic variabil?',opts:['Efectul termoelectric','Efectul fotoelectric extern','Inducția electromagnetică','Efectul piezoelectric','Efectul Hall'],c:2,pts:5},
+{s:'4. Oscilații și unde',type:'tf',text:'Oscilațiile amortizate au amplitudinea constantă în timp.',opts:['Adevăr','Fals'],c:1,pts:4},
+{s:'4. Oscilații și unde',type:'mc',text:'Care din relațiile de mai jos exprimă corect legătura dintre pulsație ω, frecvență <i>f</i> și perioadă <i>T</i>?',opts:['ω = 2π<i>T</i>','ω = <i>f</i> / (2π)','ω = 2π<i>f</i> = 2π/<i>T</i>','ω = <i>T</i> / (2π)','ω = <i>f</i> · <i>T</i>'],c:2,pts:5},
+{s:'4. Oscilații și unde',type:'calc',text:'Un corp realizează oscilații armonice cu frecvența <i>f</i> = 5 Hz și amplitudinea <i>A</i> = 0,1 m. Determinați pulsația ω și viteza maximă <i>v</i><sub>max</sub> ale oscilatorului.',opts:['ω = 5π rad/s, <i>v</i><sub>max</sub> = 1,57 m/s','ω = 10π rad/s, <i>v</i><sub>max</sub> = π m/s','ω = 10π rad/s, <i>v</i><sub>max</sub> = 3,14 m/s','ω = 5 rad/s, <i>v</i><sub>max</sub> = 0,5 m/s','ω = 2π rad/s, <i>v</i><sub>max</sub> = 0,2π m/s'],c:2,pts:10},
+{s:'5. Optică și fizică modernă',type:'tf',text:'Interferența luminii demonstrează natura ondulativă a luminii.',opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'5. Optică și fizică modernă',type:'mc',text:'Legea refracției luminii (legea lui Snell) este exprimată de relația:',opts:['<i>n</i>₁·cos α₁ = <i>n</i>₂·cos α₂','<i>n</i>₁·sin α₁ = <i>n</i>₂·sin α₂','<i>n</i>₁/sin α₁ = <i>n</i>₂/sin α₂','sin α₁/<i>n</i>₁ = sin α₂/<i>n</i>₂','<i>n</i>₁ + sin α₁ = <i>n</i>₂ + sin α₂'],c:1,pts:5}
+];
+
+let done=false;
+const totalPts=Q.reduce((a,q)=>a+q.pts,0);
+let curSec='';
+
+function render(){
+  const w=document.getElementById('wrap');
+  let h='';
+  Q.forEach((q,i)=>{
+    if(q.s!==curSec){curSec=q.s;h+=`<div class="section-hdr">${q.s}</div>`}
+    const badge=q.type==='calc'?`<span class="bcalc">Calculator</span>`:q.type==='tf'?`<span class="btf">Adevăr / Fals</span>`:'';
+    h+=`<div class="item" id="item-${i}">
+      <div class="ih"><span class="inum">Itemul ${i+1}.</span>${badge}</div>
+      <div class="iq">${q.text}</div>
+      <div class="opts">`;
+    q.opts.forEach((o,j)=>{
+      h+=`<label class="opt" id="opt-${i}-${j}" onclick="pick(${i},${j})">
+        <input type="radio" name="q${i}" value="${j}">
+        <span class="olabel">${o}</span>
+      </label>`;
+    });
+    h+=`</div>
+      <div class="ifoot">
+        <span class="ipts">Punctajul oferit pentru item: <strong>${q.pts} puncte</strong></span>
+        <span class="ifeed" id="feed-${i}"></span>
+      </div>
+    </div>`;
+  });
+  w.innerHTML=h;
+}
+
+function pick(qi,oi){
+  if(done)return;
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.remove('sel'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('sel');
+}
+
+function submit(){
+  if(done)return;
+  let score=0,ans=[];
+  Q.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const chosen=sel?parseInt(sel.value):-1;
+    ans.push(chosen);
+  });
+  let unanswered=ans.filter(a=>a===-1).length;
+  if(unanswered>0&&!confirm(`Ai ${unanswered} item(i) fără răspuns. Continui?`))return;
+  done=true;
+  Q.forEach((q,i)=>{
+    const chosen=ans[i];
+    const item=document.getElementById(`item-${i}`);
+    const feed=document.getElementById(`feed-${i}`);
+    const isOk=chosen===q.c;
+    if(isOk)score+=q.pts;
+    item.classList.add(isOk?'graded-ok':'graded-fail');
+    if(chosen>=0){
+      const selOpt=document.getElementById(`opt-${i}-${chosen}`);
+      if(selOpt)selOpt.classList.add(isOk?'good':'bad');
+    }
+    if(!isOk){
+      const corrOpt=document.getElementById(`opt-${i}-${q.c}`);
+      if(corrOpt)corrOpt.classList.add('good');
+    }
+    feed.innerHTML=isOk?'<span class="ifeed ok">✓ Corect</span>':'<span class="ifeed fail">✗ Incorect</span>';
+  });
+  const pct=Math.round(score/totalPts*100);
+  let msg=pct>=90?'Excelent! 🎓':pct>=70?'Bine! Continuă să înveți.':pct>=50?'Satisfăcător. Mai exersează.':'Necesită mai multă pregătire.';
+  document.getElementById('snum').textContent=score;
+  document.getElementById('tpts').textContent=totalPts;
+  document.getElementById('smsg').textContent=`${pct}% — ${msg}`;
+  document.getElementById('sbar').style.display='flex';
+  document.getElementById('btn').disabled=true;
+  document.getElementById('sbar').scrollIntoView({behavior:'smooth'});
+}
+
+render();
+</script>

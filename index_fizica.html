@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste de Fizică — Guțuleac Leonid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07090f;
+    --surface: #0d1017;
+    --surface2: #121820;
+    --border: rgba(96, 165, 250, 0.12);
+    --border-hover: rgba(96, 165, 250, 0.35);
+    --accent: #60a5fa;
+    --accent2: #38bdf8;
+    --accent3: #a78bfa;
+    --text-primary: #e8eaf0;
+    --text-secondary: #8b95a8;
+    --text-muted: #4a5568;
+    --gold: #f0c060;
+    --grid-color: rgba(96, 165, 250, 0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Grid background ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Radial glow ── */
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+  }
+  .glow-orb-1 { width: 600px; height: 600px; background: #1e40af; top: -100px; left: -150px; }
+  .glow-orb-2 { width: 500px; height: 500px; background: #0e7490; bottom: 100px; right: -100px; }
+  .glow-orb-3 { width: 400px; height: 400px; background: #5b21b6; top: 40%; left: 40%; }
+
+  /* ── Wrapper ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 5rem 0 4rem;
+    text-align: center;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    background: rgba(96, 165, 250, 0.08);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+    border-radius: 2px;
+    padding: 0.35rem 0.85rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: transparent;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-desc {
+    max-width: 520px;
+    margin: 1.2rem auto 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0 2.5rem;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 3.5rem;
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 0.35rem;
+    display: block;
+  }
+
+  /* ── Cards grid ── */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    .stats-bar { gap: 1.5rem; }
+    .card-v4 { grid-column: 1; }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    animation: fadeUp 0.8s ease both;
+  }
+  .card:nth-child(1) { animation-delay: 0.25s; }
+  .card:nth-child(2) { animation-delay: 0.32s; }
+  .card:nth-child(3) { animation-delay: 0.39s; }
+  .card:nth-child(4) { animation-delay: 0.46s; }
+  .card:nth-child(5) { animation-delay: 0.53s; }
+  .card:nth-child(6) { animation-delay: 0.60s; }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(96,165,250,0.1);
+  }
+
+  /* Accent bar top */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--card-accent, var(--accent)), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover::before { opacity: 1; }
+
+  /* Glow effect on hover */
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: var(--card-accent, var(--accent));
+    filter: blur(60px);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .card:hover::after { opacity: 0.06; }
+
+  /* Card special: v4 full width */
+  .card-v4 { grid-column: 1 / -1; }
+
+  /* Card header row */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-version {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    color: var(--card-accent, var(--accent));
+    text-transform: uppercase;
+    background: rgba(96,165,250,0.08);
+    border: 1px solid rgba(96,165,250,0.15);
+    border-radius: 2px;
+    padding: 0.2rem 0.55rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .card-items {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .card-items strong {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .card-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1.2rem;
+    font-style: italic;
+    font-family: 'Libre Baskerville', serif;
+  }
+
+  /* Topics chips */
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .topic {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 2px;
+    padding: 0.25rem 0.6rem;
+  }
+
+  /* Card footer */
+  .card-footer {
+    margin-top: 1.4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-file {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .card-arrow {
+    font-size: 0.8rem;
+    color: var(--card-accent, var(--accent));
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  /* ── Accent colors per card ── */
+  .c-blue   { --card-accent: #60a5fa; }
+  .c-cyan   { --card-accent: #22d3ee; }
+  .c-violet { --card-accent: #a78bfa; }
+  .c-emerald{ --card-accent: #34d399; }
+  .c-amber  { --card-accent: #fbbf24; }
+  .c-rose   { --card-accent: #fb7185; }
+
+  /* ── Footer ── */
+  .page-footer {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 1s 0.7s ease both;
+  }
+  .page-footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    line-height: 1.8;
+  }
+  .page-footer .formula {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── Formula decoration in hero ── */
+  .hero-formula {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 2rem;
+    letter-spacing: 0.02em;
+    opacity: 0.7;
+  }
+  .hero-formula span { color: var(--accent); opacity: 0.8; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb glow-orb-1"></div>
+<div class="glow-orb glow-orb-2"></div>
+<div class="glow-orb glow-orb-3"></div>
+
+<div class="wrapper">
+
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <div class="hero-badge">Curs Universitar · Fizică</div>
+    <h1>Teste de <em>Fizică</em></h1>
+    <p class="hero-meta">Guțuleac Leonid · Colecție completă</p>
+    <p class="hero-desc">
+      Șase teste interactive pentru verificarea cunoștințelor din fizica universitară —
+      de la mecanică clasică și termodinamică până la electromagnetism, optică și fizică modernă.
+    </p>
+    <p class="hero-formula">
+      F = m·a &nbsp;·&nbsp; <span>∇×B = μ₀J + μ₀ε₀ ∂E/∂t</span> &nbsp;·&nbsp; E = mc²
+    </p>
+  </header>
+
+  <!-- ── Stats ── -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Teste</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">170+</span>
+      <span class="stat-label">Întrebări</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">10</span>
+      <span class="stat-label">Domenii</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">Încercări</span>
+    </div>
+  </div>
+
+  <!-- ── Divider ── -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-label">Selectează un test</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ── Cards ── -->
+  <div class="cards">
+
+    <!-- Test 1 -->
+    <a class="card c-blue" href="test_fizica_gutu.html">
+      <div class="card-header">
+        <span class="card-version">Test v1</span>
+        <span class="card-items"><strong>25</strong> itemi</span>
+      </div>
+      <div class="card-title">Test de Fizică</div>
+      <div class="card-subtitle">Varianta I — Nivel universitar de bază</div>
+      <div class="topics">
+        <span class="topic">Mecanică clasică</span>
+        <span class="topic">Fizică moleculară</span>
+        <span class="topic">Electromagnetism</span>
+        <span class="topic">Oscilații</span>
+        <span class="topic">Optică</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-file">test_fizica_gutu.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Test 2 -->
+    <a class="card c-cyan" href="test_fizica_gutu_v2.html">
+      <div class="card-header">
+        <span class="card-version">Test v2</span>
+        <span class="card-items"><strong>25</strong> itemi</span>
+      </div>
+      <div class="card-title">Test de Fizică</div>
+      <div class="card-subtitle">Varianta II — Extins cu termodinamică și fizică modernă</div>
+      <div class="topics">
+        <span class="topic">Mecanică clasică</span>
+        <span class="topic">Fizică moleculară</span>
+        <span class="topic">Termodinamică</span>
+        <span class="topic">Electromagnetism</span>
+        <span class="topic">Oscilații</span>
+        <span class="topic">Optică</span>
+        <span class="topic">Fizică modernă</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-file">test_fizica_gutu_v2.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Test 3 -->
+    <a class="card c-violet" href="test_fizica_gutu_v3.html">
+      <div class="card-header">
+        <span class="card-version">Test v3</span>
+        <span class="card-items"><strong>25</strong> itemi</span>
+      </div>
+      <div class="card-title">Test de Fizică</div>
+      <div class="card-subtitle">Varianta III — Focusat pe câmpuri și unde</div>
+      <div class="topics">
+        <span class="topic">Mișcarea de translație</span>
+        <span class="topic">Teoria cinetico-moleculară</span>
+        <span class="topic">Câmpul electric</span>
+        <span class="topic">Oscilații mecanice</span>
+        <span class="topic">Unde</span>
+        <span class="topic">Interferența luminii</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-file">test_fizica_gutu_v3.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Test universitar -->
+    <a class="card c-emerald" href="test_fizica_universitar.html">
+      <div class="card-header">
+        <span class="card-version">Test universitar</span>
+        <span class="card-items"><strong>25</strong> itemi</span>
+      </div>
+      <div class="card-title">Test de Fizică Universitară</div>
+      <div class="card-subtitle">Test interactiv — Cuprins complet universitar</div>
+      <div class="topics">
+        <span class="topic">Mecanică clasică</span>
+        <span class="topic">Termodinamică</span>
+        <span class="topic">Electromagnetism</span>
+        <span class="topic">Oscilații</span>
+        <span class="topic">Optică</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-file">test_fizica_universitar.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Test v4 — full width -->
+    <a class="card c-amber card-v4" href="test_fizica_gutu_v4.html">
+      <div class="card-header">
+        <span class="card-version">Test v4 · Avansat</span>
+        <span class="card-items"><strong>45</strong> itemi · <strong>15</strong> secțiuni</span>
+      </div>
+      <div class="card-title">Test de Fizică — Ediție Extinsă</div>
+      <div class="card-subtitle">Varianta IV · Cea mai cuprinzătoare colecție — electromagnetism avansat, optică și fizică modernă</div>
+      <div class="topics">
+        <span class="topic">Fenomene de transport</span>
+        <span class="topic">Curent electric staționar</span>
+        <span class="topic">Câmpul magnetic</span>
+        <span class="topic">Inducție electromagnetică</span>
+        <span class="topic">Oscilații amortizate</span>
+        <span class="topic">Interferența luminii</span>
+        <span class="topic">Difracția luminii</span>
+        <span class="topic">Polarizarea luminii</span>
+        <span class="topic">Fizică modernă</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-file">test_fizica_gutu_v4.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Part 2 — full width -->
+    <a class="card c-rose card-v4" href="test_fizica_part2.html">
+      <div class="card-header">
+        <span class="card-version">Continuare · Itemi 26–35</span>
+        <span class="card-items"><strong>10</strong> itemi</span>
+      </div>
+      <div class="card-title">Test de Fizică — Continuare</div>
+      <div class="card-subtitle">Itemi 26–35 · A doua parte — mecanica fluidelor, termodinamică avansată și fizică modernă</div>
+      <div class="topics">
+        <span class="topic">Mecanica fluidelor</span>
+        <span class="topic">Termodinamică avansată</span>
+        <span class="topic">Electromagnetism</span>
+        <span class="topic">Optică</span>
+        <span class="topic">Fizică modernă</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-file">test_fizica_part2.html</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="page-footer">
+    <p class="formula">∮ E·dA = Q/ε₀ &nbsp;·&nbsp; ΔS ≥ 0 &nbsp;·&nbsp; ħω = hf</p>
+    <p style="margin-top:1rem;">Guțuleac Leonid · Curs Universitar de Fizică<br>Toate testele sunt interactive și pot fi susținute direct în browser.</p>
+  </footer>
+
+</div>
+</body>
+</html>

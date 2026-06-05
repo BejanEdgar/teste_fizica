@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de fizică — Guțuleac Leonid (v3)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f7fa;min-height:100vh;padding:2rem 1rem}
+.tw{max-width:760px;margin:0 auto;padding:.5rem 0 3rem}
+.th{padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:2px solid #1565C0}
+.th h1{font-size:17px;font-weight:500;color:#1a1a2e;letter-spacing:.8px;text-transform:uppercase}
+.th-meta{font-size:12.5px;color:#555;margin-top:5px}
+.section-hdr{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:#555;margin:1.5rem 0 .75rem;padding-left:8px;border-left:3px solid #1565C0}
+.item{border:.5px solid #dde1e8;border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:1rem;background:#fff;transition:border-color .2s}
+.item.graded-ok{border-color:#2e7d32!important}
+.item.graded-fail{border-color:#c62828!important}
+.ih{display:flex;align-items:center;gap:8px;margin-bottom:.65rem;flex-wrap:wrap}
+.inum{font-size:12px;font-weight:500;color:#666}
+.bcalc{background:#1565C0;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.btf{background:#5c35b1;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.iq{font-size:13.5px;color:#222;line-height:1.65;margin-bottom:.9rem}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:flex;align-items:flex-start;gap:8px;padding:6px 10px;border-radius:6px;cursor:pointer;border:.5px solid transparent;transition:background .12s}
+.opt:hover{background:#f0f4f8}
+.opt.sel{background:rgba(21,101,192,.08);border-color:#1565C0}
+.opt.good{background:rgba(46,125,50,.1)!important;border-color:#2e7d32!important}
+.opt.bad{background:rgba(198,40,40,.1)!important;border-color:#c62828!important}
+.opt input[type=radio]{margin-top:3px;accent-color:#1565C0;flex-shrink:0}
+.olabel{font-size:13px;color:#222;line-height:1.5}
+.ifoot{margin-top:.75rem;border-top:.5px solid #dde1e8;padding-top:.55rem;display:flex;align-items:center;justify-content:space-between}
+.ipts{font-size:11.5px;color:#666}
+.ifeed{font-size:12px;font-weight:500}
+.ifeed.ok{color:#2e7d32}
+.ifeed.fail{color:#c62828}
+.sbmt{display:flex;justify-content:center;margin-top:1.75rem}
+.sbmt button{padding:10px 40px;font-size:14px;font-weight:500;background:#1565C0;color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:.3px}
+.sbmt button:hover{background:#1976D2}
+.sbmt button:disabled{background:#90a4ae;cursor:default}
+.sbar{background:#f0f4f8;border:.5px solid #c5cdd8;border-radius:10px;padding:.9rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.2rem}
+.snum{font-size:30px;font-weight:500;color:#1565C0}
+.slabel{font-size:12.5px;color:#555}
+.smsg{font-size:13px;color:#222;margin-top:2px}
+.hint{font-size:11.5px;color:#777;margin-top:.4rem;font-style:italic}
+</style>
+</head>
+<body>
+<div class="tw">
+  <div class="th">
+    <h1>Test de fizică</h1>
+    <p class="th-meta">Guțuleac Leonid · Curs universitar &nbsp;|&nbsp; 25 itemi · Mișcarea de translație, Teoria cinetico-moleculară, Câmpul electric, Oscilații mecanice, Unde &amp; Interferența luminii</p>
+  </div>
+  <div id="sbar" class="sbar" style="display:none">
+    <div class="snum" id="snum">0</div>
+    <div>
+      <div class="slabel">puncte din <span id="tpts"></span> posibile</div>
+      <div class="smsg" id="smsg"></div>
+    </div>
+  </div>
+  <div id="wrap"></div>
+  <div class="sbmt"><button id="btn" onclick="submit()">Verifică răspunsurile</button></div>
+</div>
+
+<script>
+const Q=[
+
+/* ══════════════════════════════════════════
+   1. Mișcarea de translație
+   ══════════════════════════════════════════ */
+{s:'1. Mișcarea de translație', type:'tf',
+ text:'Mișcarea mecanică a unui corp este schimbarea poziției lui față de alte corpuri.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'1. Mișcarea de translație', type:'tf',
+ text:'Vectorul de poziție al unui punct material are componentele <i>r<sub>x</sub></i> = <i>x</i>, <i>r<sub>y</sub></i> = <i>y</i>, <i>r<sub>z</sub></i> = <i>z</i>, deci <b>r</b> = <i>x</i>·<b>i</b> + <i>y</i>·<b>j</b> + <i>z</i>·<b>k</b>.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'1. Mișcarea de translație', type:'mc',
+ text:'Ecuația de mișcare a unui punct material este <i>x</i> = <i>At</i> + <i>Bt</i>². Care este expresia vitezei instantanee <i>v<sub>x</sub></i>(<i>t</i>)?',
+ opts:[
+   '<i>v<sub>x</sub></i> = <i>A</i> + <i>Bt</i>',
+   '<i>v<sub>x</sub></i> = <i>A</i> + 2<i>Bt</i>',
+   '<i>v<sub>x</sub></i> = 2<i>B</i>',
+   '<i>v<sub>x</sub></i> = <i>A</i>/<i>t</i> + <i>B</i>',
+   '<i>v<sub>x</sub></i> = <i>A</i> + <i>Bt</i>²'
+ ], c:1, pts:5},
+
+{s:'1. Mișcarea de translație', type:'tf',
+ text:'Drumul parcurs Δ<i>S</i> este întotdeauna egal cu modulul deplasării |Δ<b>r</b>|.',
+ opts:['Adevăr','Fals'], c:1, pts:4},
+
+{s:'1. Mișcarea de translație', type:'calc',
+ text:'Ecuația de mișcare a unui punct material este <i>x</i> = <i>At</i> + <i>Bt</i>², unde <i>A</i> = 6 m/s și <i>B</i> = −0,3 m/s². Determinați momentul de timp <i>t</i> la care viteza devine zero și coordonata <i>x</i> în acel moment.',
+ opts:[
+   '<i>t</i> = 5 s, <i>x</i> = 22,5 m',
+   '<i>t</i> = 8 s, <i>x</i> = 28,8 m',
+   '<i>t</i> = 10 s, <i>x</i> = 30 m',
+   '<i>t</i> = 12 s, <i>x</i> = 28,8 m',
+   '<i>t</i> = 15 s, <i>x</i> = 22,5 m'
+ ], c:2, pts:10,
+ hint:'v<sub>x</sub> = A + 2Bt = 0 → t = −A/(2B) = −6/(2·(−0,3)) = 10 s. Apoi x = At + Bt².'},
+
+{s:'1. Mișcarea de translație', type:'calc',
+ text:'Viteza unui corp scade uniform de la <i>v</i>₁ = 20 m/s la <i>v</i>₂ = 8 m/s pe distanța <i>l</i> = 56 m. Determinați durata deplasării <i>t</i> și modulul accelerației |<i>a</i>|.',
+ opts:[
+   '<i>t</i> = 3 s, |<i>a</i>| = 4 m/s²',
+   '<i>t</i> = 4 s, |<i>a</i>| = 3 m/s²',
+   '<i>t</i> = 5 s, |<i>a</i>| = 2,4 m/s²',
+   '<i>t</i> = 6 s, |<i>a</i>| = 2 m/s²',
+   '<i>t</i> = 2 s, |<i>a</i>| = 6 m/s²'
+ ], c:1, pts:10,
+ hint:'l = (v₁ + v₂)·t/2 → t = 2l/(v₁ + v₂). Apoi a = (v₂ − v₁)/t.'},
+
+/* ══════════════════════════════════════════
+   2. Teoria cinetico-moleculară
+   ══════════════════════════════════════════ */
+{s:'2. Teoria cinetico-moleculară', type:'tf',
+ text:'Un gaz nu poate să-și păstreze nici forma, nici volumul propriu, spre deosebire de un solid care le păstrează pe amândouă.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'2. Teoria cinetico-moleculară', type:'mc',
+ text:'Care este cea de-a patra stare de agregare a materiei, pe lângă solidă, lichidă și gazoasă?',
+ opts:[
+   'Cristalină',
+   'Coloidală',
+   'Plasma',
+   'Sublimată',
+   'Amorfă'
+ ], c:2, pts:5},
+
+{s:'2. Teoria cinetico-moleculară', type:'tf',
+ text:'Ecuația de stare a gazului ideal (Mendeleev–Clapeyron) este <i>PV</i> = ν<i>RT</i>, unde ν este cantitatea de substanță în moli și <i>R</i> = 8,31 J/(mol·K).',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'2. Teoria cinetico-moleculară', type:'mc',
+ text:'Din ecuația de stare <i>PV</i> = (<i>m</i>/μ)<i>RT</i>, masa <i>m</i> a gazului dintr-un recipient de volum <i>V</i>, la presiunea <i>P</i> și temperatura <i>T</i>, cu masa molară μ, este:',
+ opts:[
+   '<i>m</i> = <i>PVR</i>/(μ<i>T</i>)',
+   '<i>m</i> = <i>PV</i>/(μ<i>RT</i>)',
+   '<i>m</i> = <i>PV</i>μ/(<i>RT</i>)',
+   '<i>m</i> = <i>RT</i>/(<i>PV</i>μ)',
+   '<i>m</i> = <i>P</i>μ<i>T</i>/(<i>RV</i>)'
+ ], c:2, pts:5},
+
+{s:'2. Teoria cinetico-moleculară', type:'calc',
+ text:'Determinați presiunea azotului N₂ (μ = 28 g/mol) cu masa <i>m</i> = 56 g, la temperatura <i>T</i> = 300 K, aflat într-un recipient cu volumul <i>V</i> = 10 l. (<i>R</i> = 8,31 J/(mol·K))',
+ opts:[
+   '<i>P</i> = 1·10⁵ Pa',
+   '<i>P</i> = 2·10⁵ Pa',
+   '<i>P</i> = 3·10⁵ Pa',
+   '<i>P</i> = 4·10⁵ Pa',
+   '<i>P</i> = 5·10⁵ Pa'
+ ], c:4, pts:10,
+ hint:'ν = m/μ = 56/28 = 2 mol. P = νRT/V = 2·8,31·300/(10·10⁻³). Atenție: V = 10⁻² m³.'},
+
+{s:'2. Teoria cinetico-moleculară', type:'calc',
+ text:'Determinați numărul de molecule <i>N</i> dintr-o probă de hidrogen H₂ (μ = 2 g/mol) cu masa <i>m</i> = 4 g. (<i>N</i><sub>A</sub> = 6,02·10²³ mol⁻¹)',
+ opts:[
+   '<i>N</i> = 3,01·10²³',
+   '<i>N</i> = 6,02·10²³',
+   '<i>N</i> = 1,20·10²⁴',
+   '<i>N</i> = 2,41·10²⁴',
+   '<i>N</i> = 4,82·10²⁴'
+ ], c:2, pts:10,
+ hint:'ν = m/μ = 4/2 = 2 mol. N = ν·N<sub>A</sub> = 2·6,02·10²³.'},
+
+/* ══════════════════════════════════════════
+   3. Câmpul electric
+   ══════════════════════════════════════════ */
+{s:'3. Câmpul electric', type:'tf',
+ text:'La electrizarea unui corp prin frecare se produce un transfer de electroni: corpul cu surplus de electroni devine electrizat negativ, iar cel cu deficit — pozitiv.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'3. Câmpul electric', type:'tf',
+ text:'Sarcinile electrice de același semn se resping, iar sarcinile de semn diferit se atrag.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'3. Câmpul electric', type:'mc',
+ text:'Legea lui Coulomb exprimă forța de interacțiune electrostatică dintre două sarcini punctiforme <i>q</i>₁ și <i>q</i>₂ aflate la distanța <i>r</i> în mediu cu permitivitate ε:',
+ opts:[
+   '<i>F</i> = <i>k</i>·<i>q</i>₁<i>q</i>₂/<i>r</i>',
+   '<i>F</i> = <i>k</i>·<i>q</i>₁<i>q</i>₂/(ε<i>r</i>²)',
+   '<i>F</i> = <i>k</i>·<i>q</i>₁<i>q</i>₂·<i>r</i>²',
+   '<i>F</i> = <i>k</i>/(<i>q</i>₁<i>q</i>₂<i>r</i>²)',
+   '<i>F</i> = <i>k</i>·(<i>q</i>₁ + <i>q</i>₂)/<i>r</i>²'
+ ], c:1, pts:5},
+
+{s:'3. Câmpul electric', type:'calc',
+ text:'Două sarcini punctiforme egale <i>q</i>₁ = <i>q</i>₂ = 6 μC sunt situate în vid (ε = 1) la distanța <i>r</i> = 30 cm. Determinați forța de interacțiune Coulomb. (<i>k</i> = 9·10⁹ N·m²/C²)',
+ opts:[
+   '<i>F</i> = 1,2 N',
+   '<i>F</i> = 2,4 N',
+   '<i>F</i> = 3,6 N',
+   '<i>F</i> = 4,8 N',
+   '<i>F</i> = 7,2 N'
+ ], c:2, pts:10,
+ hint:'F = k·q₁·q₂/r² = 9·10⁹·(6·10⁻⁶)²/(0,3)². Calculați numărătorul și numitorul separat.'},
+
+/* ══════════════════════════════════════════
+   4. Oscilații mecanice
+   ══════════════════════════════════════════ */
+{s:'4. Oscilații mecanice', type:'tf',
+ text:'Oscilațiile armonice sunt descrise de funcția <i>y</i> = <i>A</i>·cos(ω<i>t</i> + φ₀), unde <i>A</i> este amplitudinea, ω — pulsația, iar φ₀ — faza inițială.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'4. Oscilații mecanice', type:'mc',
+ text:'Pulsația ω a unui oscilator armonic în funcție de frecvența ν este:',
+ opts:[
+   'ω = ν/(2π)',
+   'ω = 2π/<i>T</i>²',
+   'ω = 2πν',
+   'ω = ν·<i>T</i>',
+   'ω = π/ν'
+ ], c:2, pts:5},
+
+{s:'4. Oscilații mecanice', type:'tf',
+ text:'Perioada de oscilație <i>T</i> și frecvența ν sunt legate prin relația <i>T</i> = 1/ν.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'4. Oscilații mecanice', type:'calc',
+ text:'Un pendul elastic cu masa <i>m</i> = 0,4 kg și constanta elastică <i>k</i> = 40 N/m oscilează liber. Determinați perioada proprie de oscilații <i>T</i>. (formula: <i>T</i> = 2π√(<i>m</i>/<i>k</i>); π ≈ 3,14)',
+ opts:[
+   '<i>T</i> = 0,31 s',
+   '<i>T</i> = 0,45 s',
+   '<i>T</i> = 0,63 s',
+   '<i>T</i> = 0,94 s',
+   '<i>T</i> = 1,26 s'
+ ], c:2, pts:10,
+ hint:'T = 2π√(m/k) = 2π·√(0,4/40) = 2π·√(0,01) = 2π·0,1. Calculați 2·3,14·0,1.'},
+
+{s:'4. Oscilații mecanice', type:'calc',
+ text:'Un oscilator amortizat efectuează <i>N</i> = 50 oscilații, după care amplitudinea se micșorează de <i>n</i> = 3 ori față de cea inițială. Determinați decrementul logaritmic λ al oscilatorului. (ln 3 ≈ 1,099)',
+ opts:[
+   'λ = 0,012',
+   'λ = 0,016',
+   'λ = 0,022',
+   'λ = 0,030',
+   'λ = 0,044'
+ ], c:2, pts:10,
+ hint:'Din Nλ = ln(A₀/Aₙ) = ln 3 → λ = ln(3)/N = 1,099/50.'},
+
+/* ══════════════════════════════════════════
+   5. Undele și interferența luminii
+   ══════════════════════════════════════════ */
+{s:'5. Undele și interferența luminii', type:'tf',
+ text:'Undele sunt caracterizate prin amplitudine, frecvență ν, lungime de undă λ, perioadă <i>T</i> și viteză de propagare <i>v</i>.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'5. Undele și interferența luminii', type:'mc',
+ text:'Relația care leagă lungimea de undă λ, frecvența ν și viteza de propagare <i>v</i> a undei este:',
+ opts:[
+   'λ = <i>v</i>·ν',
+   'λ = <i>v</i>/ν',
+   'ν = λ·<i>v</i>',
+   '<i>v</i> = λ/<i>T</i>²',
+   'λ = ν/<i>v</i>'
+ ], c:1, pts:5},
+
+{s:'5. Undele și interferența luminii', type:'tf',
+ text:'Indicele de refracție al unui mediu se definește ca raportul <i>n</i> = <i>c</i>/<i>v</i>, unde <i>c</i> este viteza luminii în vid, iar <i>v</i> — viteza luminii în acel mediu. Rezultă că pentru orice mediu material <i>n</i> > 1.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'5. Undele și interferența luminii', type:'mc',
+ text:'Numărul de undă <i>k</i> al unei unde sinusoidale cu lungimea de undă λ este dat de formula:',
+ opts:[
+   '<i>k</i> = λ/(2π)',
+   '<i>k</i> = 2π·λ',
+   '<i>k</i> = 2π/λ',
+   '<i>k</i> = λ·π',
+   '<i>k</i> = 1/λ'
+ ], c:2, pts:5},
+
+{s:'5. Undele și interferența luminii', type:'calc',
+ text:'Viteza luminii în vid <i>c</i> = 3·10⁸ m/s. Determinați viteza luminii <i>v</i> într-un mediu cu indicele de refracție <i>n</i> = 1,5 și lungimea de undă λ în acel mediu dacă frecvența luminii ν = 5·10¹⁴ Hz.',
+ opts:[
+   '<i>v</i> = 1,5·10⁸ m/s, λ = 0,3 μm',
+   '<i>v</i> = 2,0·10⁸ m/s, λ = 0,4 μm',
+   '<i>v</i> = 2,5·10⁸ m/s, λ = 0,5 μm',
+   '<i>v</i> = 1,0·10⁸ m/s, λ = 0,2 μm',
+   '<i>v</i> = 3,0·10⁸ m/s, λ = 0,6 μm'
+ ], c:1, pts:10,
+ hint:'v = c/n = 3·10⁸/1,5. Apoi λ = v/ν. Atenție la unitățile: 1 μm = 10⁻⁶ m.'},
+
+];
+
+let done=false;
+const totalPts=Q.reduce((a,q)=>a+q.pts,0);
+let curSec='';
+
+function render(){
+  const w=document.getElementById('wrap');
+  let h='';
+  curSec='';
+  Q.forEach((q,i)=>{
+    if(q.s!==curSec){curSec=q.s;h+=`<div class="section-hdr">${q.s}</div>`;}
+    const badge=q.type==='calc'
+      ?'<span class="bcalc">Calculator</span>'
+      :q.type==='tf'
+        ?'<span class="btf">Adevăr / Fals</span>'
+        :'';
+    h+=`<div class="item" id="item-${i}">
+      <div class="ih"><span class="inum">Itemul ${i+1}.</span>${badge}</div>
+      <div class="iq">${q.text}</div>`;
+    if(q.hint){h+=`<div class="hint">💡 Indiciu: ${q.hint}</div>`;}
+    h+=`<div class="opts" style="margin-top:.75rem">`;
+    q.opts.forEach((o,j)=>{
+      h+=`<label class="opt" id="opt-${i}-${j}" onclick="pick(${i},${j})">
+        <input type="radio" name="q${i}" value="${j}">
+        <span class="olabel">${o}</span>
+      </label>`;
+    });
+    h+=`</div>
+      <div class="ifoot">
+        <span class="ipts">Punctajul oferit: <strong>${q.pts} puncte</strong></span>
+        <span class="ifeed" id="feed-${i}"></span>
+      </div>
+    </div>`;
+  });
+  w.innerHTML=h;
+}
+
+function pick(qi,oi){
+  if(done)return;
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.remove('sel'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('sel');
+}
+
+function submit(){
+  if(done)return;
+  const ans=Q.map((_,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    return sel?parseInt(sel.value):-1;
+  });
+  const unanswered=ans.filter(a=>a===-1).length;
+  if(unanswered>0&&!confirm(`Ai ${unanswered} item(i) fără răspuns. Continui?`))return;
+  done=true;
+  let score=0;
+  Q.forEach((q,i)=>{
+    const chosen=ans[i];
+    const item=document.getElementById(`item-${i}`);
+    const feed=document.getElementById(`feed-${i}`);
+    const isOk=chosen===q.c;
+    if(isOk)score+=q.pts;
+    item.classList.add(isOk?'graded-ok':'graded-fail');
+    if(chosen>=0){
+      const selOpt=document.getElementById(`opt-${i}-${chosen}`);
+      if(selOpt)selOpt.classList.add(isOk?'good':'bad');
+    }
+    if(!isOk){
+      const corrOpt=document.getElementById(`opt-${i}-${q.c}`);
+      if(corrOpt)corrOpt.classList.add('good');
+    }
+    feed.innerHTML=isOk
+      ?'<span class="ifeed ok">✓ Corect</span>'
+      :'<span class="ifeed fail">✗ Incorect</span>';
+  });
+  const pct=Math.round(score/totalPts*100);
+  const msg=pct>=90?'Excelent! 🎓':pct>=70?'Bine! Continuă să înveți.':pct>=50?'Satisfăcător. Mai exersează.':'Necesită mai multă pregătire.';
+  document.getElementById('snum').textContent=score;
+  document.getElementById('tpts').textContent=totalPts;
+  document.getElementById('smsg').textContent=`${pct}% — ${msg}`;
+  document.getElementById('sbar').style.display='flex';
+  document.getElementById('btn').disabled=true;
+  document.getElementById('sbar').scrollIntoView({behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de fizică — Guțuleac Leonid (v4)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f7fa;min-height:100vh;padding:2rem 1rem}
+.tw{max-width:760px;margin:0 auto;padding:.5rem 0 3rem}
+.th{padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:2px solid #1565C0}
+.th h1{font-size:17px;font-weight:500;color:#1a1a2e;letter-spacing:.8px;text-transform:uppercase}
+.th-meta{font-size:12.5px;color:#555;margin-top:5px}
+.section-hdr{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:#555;margin:1.5rem 0 .75rem;padding-left:8px;border-left:3px solid #1565C0}
+.item{border:.5px solid #dde1e8;border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:1rem;background:#fff;transition:border-color .2s}
+.item.graded-ok{border-color:#2e7d32!important}
+.item.graded-fail{border-color:#c62828!important}
+.ih{display:flex;align-items:center;gap:8px;margin-bottom:.65rem;flex-wrap:wrap}
+.inum{font-size:12px;font-weight:500;color:#666}
+.bcalc{background:#1565C0;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.btf{background:#5c35b1;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.iq{font-size:13.5px;color:#222;line-height:1.65;margin-bottom:.9rem}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:flex;align-items:flex-start;gap:8px;padding:6px 10px;border-radius:6px;cursor:pointer;border:.5px solid transparent;transition:background .12s}
+.opt:hover{background:#f0f4f8}
+.opt.sel{background:rgba(21,101,192,.08);border-color:#1565C0}
+.opt.good{background:rgba(46,125,50,.1)!important;border-color:#2e7d32!important}
+.opt.bad{background:rgba(198,40,40,.1)!important;border-color:#c62828!important}
+.opt input[type=radio]{margin-top:3px;accent-color:#1565C0;flex-shrink:0}
+.olabel{font-size:13px;color:#222;line-height:1.5}
+.ifoot{margin-top:.75rem;border-top:.5px solid #dde1e8;padding-top:.55rem;display:flex;align-items:center;justify-content:space-between}
+.ipts{font-size:11.5px;color:#666}
+.ifeed{font-size:12px;font-weight:500}
+.ifeed.ok{color:#2e7d32}
+.ifeed.fail{color:#c62828}
+.sbmt{display:flex;justify-content:center;margin-top:1.75rem}
+.sbmt button{padding:10px 40px;font-size:14px;font-weight:500;background:#1565C0;color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:.3px}
+.sbmt button:hover{background:#1976D2}
+.sbmt button:disabled{background:#90a4ae;cursor:default}
+.sbar{background:#f0f4f8;border:.5px solid #c5cdd8;border-radius:10px;padding:.9rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.2rem}
+.snum{font-size:30px;font-weight:500;color:#1565C0}
+.slabel{font-size:12.5px;color:#555}
+.smsg{font-size:13px;color:#222;margin-top:2px}
+.hint{font-size:11.5px;color:#777;margin-top:.4rem;font-style:italic}
+</style>
+</head>
+<body>
+<div class="tw">
+  <div class="th">
+    <h1>Test de fizică</h1>
+    <p class="th-meta">Guțuleac Leonid · Curs universitar &nbsp;|&nbsp; 45 itemi · 15 secțiuni · Fenomene de transport · Curent electric staționar · Câmpul magnetic · Inducție electromagnetică · Oscilații amortizate · Interferența și difracția luminii · Polarizarea luminii · Fizică modernă</p>
+  </div>
+  <div id="sbar" class="sbar" style="display:none">
+    <div class="snum" id="snum">0</div>
+    <div>
+      <div class="slabel">puncte din <span id="tpts"></span> posibile</div>
+      <div class="smsg" id="smsg"></div>
+    </div>
+  </div>
+  <div id="wrap"></div>
+  <div class="sbmt"><button id="btn" onclick="submit()">Verifică răspunsurile</button></div>
+</div>
+
+<script>
+const Q=[
+
+/* ══════════════════════════════════════════
+   0. Mecanica clasică — Mișcare rectilinie
+   ══════════════════════════════════════════ */
+{s:'1. Mecanica clasică — Mișcare rectilinie', type:'tf',
+ text:'Legea vitezei în mișcarea uniform încetinită este <i>v</i> = <i>v</i>₀ − <i>at</i>, iar spațiul parcurs este <i>l</i> = (<i>v</i>₀ + <i>v</i>)·<i>t</i>/2.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'1. Mecanica clasică — Mișcare rectilinie', type:'calc',
+ text:'Legea de mișcare a unui punct material este <i>x</i> = <i>At</i> + <i>Bt</i>², cu <i>A</i> = 4 m/s și <i>B</i> = −0,05 m/s². Determinați momentul de timp <i>t</i> la care viteza este zero, coordonata <i>x</i> și accelerația <i>a<sub>x</sub></i>.',
+ opts:[
+   '<i>t</i> = 30 s, <i>x</i> = 75 m, <i>a<sub>x</sub></i> = −0,1 m/s²',
+   '<i>t</i> = 40 s, <i>x</i> = 80 m, <i>a<sub>x</sub></i> = −0,1 m/s²',
+   '<i>t</i> = 40 s, <i>x</i> = 90 m, <i>a<sub>x</sub></i> = −0,05 m/s²',
+   '<i>t</i> = 50 s, <i>x</i> = 100 m, <i>a<sub>x</sub></i> = −0,1 m/s²',
+   '<i>t</i> = 20 s, <i>x</i> = 60 m, <i>a<sub>x</sub></i> = −0,1 m/s²'
+ ], c:1, pts:10,
+ hint:'v_x = A + 2Bt = 0 → t = −A/(2B) = 4/0,1 = 40 s. x = 4·40 + (−0,05)·1600 = 160 − 80 = 80 m. a_x = 2B = −0,1 m/s².'},
+
+{s:'1. Mecanica clasică — Mișcare rectilinie', type:'calc',
+ text:'Un corp se mișcă uniform decelerant: viteza inițială <i>v</i>₁ = 25 m/s, viteza finală <i>v</i>₂ = 15 m/s, distanța parcursă <i>l</i> = 40 m. Determinați timpul <i>t</i> și decelerația <i>a</i>.',
+ opts:[
+   '<i>t</i> = 1 s, <i>a</i> = 10 m/s²',
+   '<i>t</i> = 2 s, <i>a</i> = 5 m/s²',
+   '<i>t</i> = 3 s, <i>a</i> = 3,3 m/s²',
+   '<i>t</i> = 4 s, <i>a</i> = 2,5 m/s²',
+   '<i>t</i> = 5 s, <i>a</i> = 2 m/s²'
+ ], c:1, pts:10,
+ hint:'l = (v₁+v₂)·t/2 → t = 2l/(v₁+v₂) = 80/40 = 2 s. a = (v₁−v₂)/t = 10/2 = 5 m/s².'},
+
+/* ══════════════════════════════════════════
+   00. Mecanica clasică — Dinamica
+   ══════════════════════════════════════════ */
+{s:'2. Mecanica clasică — Dinamica', type:'calc',
+ text:'Pe o suprafață orizontală se află masele <i>m</i>₁ = 5 kg și <i>m</i>₂ = 3 kg legate printr-un fir; de <i>m</i>₁ atârnă masa <i>M</i> = 2 kg. Coeficientul de frecare μ = 0,2, <i>g</i> = 10 m/s². Determinați accelerația <i>a</i> și tensiunile firelor <i>T</i><sub>31</sub> și <i>T</i><sub>21</sub>.',
+ opts:[
+   '<i>a</i> = 0,2 m/s², <i>T</i><sub>31</sub> = 18 N, <i>T</i><sub>21</sub> = 5 N',
+   '<i>a</i> = 0,4 m/s², <i>T</i><sub>31</sub> = 19,2 N, <i>T</i><sub>21</sub> = 7,2 N',
+   '<i>a</i> = 0,6 m/s², <i>T</i><sub>31</sub> = 20 N, <i>T</i><sub>21</sub> = 8 N',
+   '<i>a</i> = 1,0 m/s², <i>T</i><sub>31</sub> = 22 N, <i>T</i><sub>21</sub> = 10 N',
+   '<i>a</i> = 0,4 m/s², <i>T</i><sub>31</sub> = 17 N, <i>T</i><sub>21</sub> = 6 N'
+ ], c:1, pts:10,
+ hint:'a = g·(M − μ(m₁+m₂))/(m₁+m₂+M) = 10·(2−1,6)/10 = 0,4 m/s². T₃₁ = M(g−a) = 2·9,6 = 19,2 N. T₂₁ = m₂(μg+a) = 3·2,4 = 7,2 N.'},
+
+/* ══════════════════════════════════════════
+   Termodinamica — Gaz ideal și procese
+   ══════════════════════════════════════════ */
+{s:'3. Termodinamica — Gaz ideal și procese', type:'tf',
+ text:'Într-un proces izotermic al unui gaz ideal, variația energiei interne este zero (Δ<i>U</i> = 0), deci căldura absorbită este complet transformată în lucru mecanic: <i>Q</i> = <i>L</i>.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'3. Termodinamica — Gaz ideal și procese', type:'calc',
+ text:'Un recipient cu volumul <i>V</i> = 8 L conține azot (<i>μ</i> = 28 g/mol) la presiunea <i>P</i> = 2·10⁵ Pa și temperatura <i>T</i> = 300 K. Determinați masa <i>m</i> a azotului. (<i>R</i> = 8,31 J/(mol·K))',
+ opts:[
+   '<i>m</i> = 12 g',
+   '<i>m</i> = 15 g',
+   '<i>m</i> = 18 g',
+   '<i>m</i> = 22 g',
+   '<i>m</i> = 25 g'
+ ], c:2, pts:10,
+ hint:'m = PVμ/(RT) = 2·10⁵·8·10⁻³·28·10⁻³/(8,31·300) = 44,8/2493 ≈ 0,018 kg = 18 g.'},
+
+{s:'3. Termodinamica — Gaz ideal și procese', type:'calc',
+ text:'Un gaz ideal este comprimat izotermic de la <i>P</i>₁ = 760 mmHg, <i>V</i>₁ = 5 L la <i>P</i>₂ = 2<i>P</i>₁. Determinați lucrul <i>L</i> efectuat de gaz și căldura <i>Q</i> cedată. (1 mmHg = 133,32 Pa; ln(1/2) = −0,693)',
+ opts:[
+   '<i>L</i> = −200 J, <i>Q</i> = −200 J',
+   '<i>L</i> = −351 J, <i>Q</i> = −351 J',
+   '<i>L</i> = −500 J, <i>Q</i> = −500 J',
+   '<i>L</i> = +351 J, <i>Q</i> = +351 J',
+   '<i>L</i> = −700 J, <i>Q</i> = −700 J'
+ ], c:1, pts:10,
+ hint:'P₁ = 760·133,32 ≈ 1,013·10⁵ Pa. L = P₁V₁·ln(P₁/P₂) = 1,013·10⁵·5·10⁻³·ln(1/2) ≈ −351 J. Izoterm: Q = L = −351 J.'},
+
+/* ══════════════════════════════════════════
+   Câmpul electric — Forța și intensitatea
+   ══════════════════════════════════════════ */
+{s:'4. Câmpul electric — Forța și intensitatea Coulomb', type:'tf',
+ text:'Forța cu care câmpul electric acționează asupra sarcinii de probă <i>q</i> este <b>F</b> = <i>q</i><b>E</b>. Dacă sarcina este negativă, forța este antiparalelă câmpului.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'4. Câmpul electric — Forța și intensitatea Coulomb', type:'calc',
+ text:'Trei sarcini punctuale: <i>q</i>₁ = 20 μC, <i>q</i>₂ = −10 μC și <i>q</i> = 1 μC sunt plasate în vârfurile unui triunghi dreptunghic cu catetele <i>a</i> = 3 cm și <i>b</i> = 4 cm (<i>q</i> la unghiul drept). Determinați forța rezultantă <i>F</i> și intensitatea câmpului <i>E</i> la locul sarcinii <i>q</i>. (<i>k</i> = 9·10⁹ N·m²/C²)',
+ opts:[
+   '<i>F</i> = 100 N, <i>E</i> = 10⁸ V/m',
+   '<i>F</i> = 150 N, <i>E</i> = 1,5·10⁸ V/m',
+   '<i>F</i> = 207 N, <i>E</i> = 2,07·10⁸ V/m',
+   '<i>F</i> = 250 N, <i>E</i> = 2,5·10⁸ V/m',
+   '<i>F</i> = 300 N, <i>E</i> = 3,0·10⁸ V/m'
+ ], c:2, pts:10,
+ hint:'F₁=k|q||q₁|/a²=9·10⁹·10⁻⁶·20·10⁻⁶/(9·10⁻⁴)=200 N. F₂=k|q||q₂|/b²=9·10⁹·10⁻⁶·10⁻⁵/(16·10⁻⁴)≈56,25 N. F₁⊥F₂ → F=√(200²+56,25²)≈207 N. E=F/q=2,07·10⁸ V/m.'},
+
+/* ══════════════════════════════════════════
+   Corp negru — Temperatura din puterea radiată
+   ══════════════════════════════════════════ */
+{s:'5. Corp negru — Temperatura din puterea radiată', type:'calc',
+ text:'Un corp negru cu suprafața <i>S</i> = 4 cm² radiază energia <i>W</i> = 22,7 J în <i>t</i> = 1 s. Determinați temperatura <i>T</i> a corpului negru. (σ = 5,67·10⁻⁸ W/(m²·K⁴))',
+ opts:[
+   '<i>T</i> = 750 K',
+   '<i>T</i> = 900 K',
+   '<i>T</i> = 1000 K',
+   '<i>T</i> = 1200 K',
+   '<i>T</i> = 1500 K'
+ ], c:2, pts:10,
+ hint:'R = W/(S·t) = 22,7/(4·10⁻⁴) = 5,675·10⁴ W/m². σT⁴ = R → T = ⁴√(R/σ) = ⁴√(10¹²) = 1000 K.'},
+
+
+/* ══════════════════════════════════════════
+   1. Mecanica lichidelor
+   ══════════════════════════════════════════ */
+{s:'6. Mecanica lichidelor', type:'tf',
+ text:'Ecuația de continuitate pentru un fluid incompresibil exprimă conservarea debitului volumic: <i>S</i>₁<i>v</i>₁ = <i>S</i>₂<i>v</i>₂, unde <i>S</i> este secțiunea transversală și <i>v</i> viteza de curgere.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'6. Mecanica lichidelor', type:'tf',
+ text:'Legea lui Arhimede afirmă că forța de flotabilitate este egală cu greutatea volumului de lichid dezlocuit: <i>F</i><sub>A</sub> = ρ<sub>l</sub><i>Vg</i>. Dacă densitatea corpului este mai mică decât cea a lichidului, corpul plutește.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'6. Mecanica lichidelor', type:'mc',
+ text:'Ecuația lui Bernoulli pentru un fluid ideal în curgere staționară este:',
+ opts:[
+   '<i>P</i> + ρ<i>v</i>² + ρ<i>gh</i> = const',
+   '<i>P</i> + ½ρ<i>v</i>² + ρ<i>gh</i> = const',
+   '<i>P</i> + ½ρ<i>v</i>² = const',
+   '<i>P</i> = ρ<i>gh</i>',
+   'ρ<i>v</i>² + ρ<i>gh</i> = const'
+ ], c:1, pts:5},
+
+{s:'6. Mecanica lichidelor', type:'calc',
+ text:'O conductă orizontală are secțiunea <i>S</i>₁ = 10 cm² care se îngustează la <i>S</i>₂ = 2 cm². Viteza apei în secțiunea largă este <i>v</i>₁ = 1 m/s. Determinați viteza <i>v</i>₂ în secțiunea îngustă și diferența de presiune Δ<i>P</i> = <i>P</i>₁ − <i>P</i>₂. (ρ = 1000 kg/m³)',
+ opts:[
+   '<i>v</i>₂ = 3 m/s, Δ<i>P</i> = 4 000 Pa',
+   '<i>v</i>₂ = 5 m/s, Δ<i>P</i> = 12 000 Pa',
+   '<i>v</i>₂ = 4 m/s, Δ<i>P</i> = 7 500 Pa',
+   '<i>v</i>₂ = 5 m/s, Δ<i>P</i> = 15 000 Pa',
+   '<i>v</i>₂ = 6 m/s, Δ<i>P</i> = 17 500 Pa'
+ ], c:1, pts:10,
+ hint:'Continuitate: v₂ = v₁·S₁/S₂ = 1·10/2 = 5 m/s. Bernoulli: ΔP = ½ρ(v₂²−v₁²) = 500·(25−1) = 12 000 Pa.'},
+
+/* ══════════════════════════════════════════
+   2. Fizica moleculară — Fenomene de transport
+   ══════════════════════════════════════════ */
+{s:'7. Fizica moleculară — Fenomene de transport', type:'tf',
+ text:'Parcursul liber mediu al moleculelor unui gaz ideal este invers proporțional cu concentrația moleculelor și cu pătratul diametrului efectiv: <i>λ</i> = 1/(√2 · π<i>d</i>² · <i>n</i>).',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'7. Fizica moleculară — Fenomene de transport', type:'mc',
+ text:'Viteza medie aritmetică a moleculelor unui gaz ideal (distribuția Maxwell) în funcție de temperatura <i>T</i> și masa molară <i>M</i> este:',
+ opts:[
+   '<i>v̄</i> = √(3<i>RT</i>/<i>M</i>)',
+   '<i>v̄</i> = √(2<i>RT</i>/<i>M</i>)',
+   '<i>v̄</i> = √(8<i>RT</i>/(π<i>M</i>))',
+   '<i>v̄</i> = √(<i>RT</i>/<i>M</i>)',
+   '<i>v̄</i> = √(2<i>RT</i>/(π<i>M</i>))'
+ ], c:2, pts:5},
+
+{s:'7. Fizica moleculară — Fenomene de transport', type:'calc',
+ text:'Determinați viteza medie <i>v̄</i> a moleculelor de oxigen (M = 32 g/mol) la condiții normale (<i>T</i> = 273 K). (<i>R</i> = 8,31 J/(mol·K))',
+ opts:[
+   '<i>v̄</i> = 380 m/s',
+   '<i>v̄</i> = 425 m/s',
+   '<i>v̄</i> = 460 m/s',
+   '<i>v̄</i> = 510 m/s',
+   '<i>v̄</i> = 560 m/s'
+ ], c:1, pts:10,
+ hint:'v̄ = √(8RT/πM) = √(8·8,31·273/(3,14·0,032)). Numărătorul: 8·8,31·273 ≈ 18150. Numitorul: 0,10053. v̄ ≈ 425 m/s.'},
+
+{s:'7. Fizica moleculară — Fenomene de transport', type:'calc',
+ text:'Un recipient conține un amestec de azot (m₁ = 14 g, μ₁ = 28 g/mol) și hidrogen (m₂ = 9 g, μ₂ = 2 g/mol) la presiunea totală <i>P</i> = 10⁶ Pa și temperatura <i>T</i> = 283 K. Determinați volumul <i>V</i> al amestecului. (<i>R</i> = 8,31 J/(mol·K))',
+ opts:[
+   '<i>V</i> = 7,82 · 10⁻³ m³',
+   '<i>V</i> = 9,50 · 10⁻³ m³',
+   '<i>V</i> = 11,76 · 10⁻³ m³',
+   '<i>V</i> = 14,30 · 10⁻³ m³',
+   '<i>V</i> = 16,00 · 10⁻³ m³'
+ ], c:2, pts:10,
+ hint:'μ_amestec = (m₁+m₂)/(m₁/μ₁+m₂/μ₂) = 23/(0,5+4,5) = 4,6 g/mol. V = mRT/(Pμ) = 23·10⁻³·8,31·283/(10⁶·4,6·10⁻³) ≈ 11,76·10⁻³ m³.'},
+
+/* ══════════════════════════════════════════
+   3. Electromagnetism — Curent electric staționar
+   ══════════════════════════════════════════ */
+{s:'8. Electromagnetism — Curent electric staționar', type:'tf',
+ text:'Legea lui Ohm în formă locală (vectorială) este <b>j</b> = σ<b>E</b>, unde <b>j</b> este densitatea de curent, σ — conductivitatea electrică și <b>E</b> — intensitatea câmpului electric.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'8. Electromagnetism — Curent electric staționar', type:'mc',
+ text:'Legea lui Joule–Lenz: care expresie dă corect puterea disipată pe un rezistor <i>R</i> parcurs de curentul <i>I</i>?',
+ opts:[
+   '<i>P</i> = <i>I</i>²/<i>R</i>',
+   '<i>P</i> = <i>IR</i>',
+   '<i>P</i> = <i>I</i>²<i>R</i>',
+   '<i>P</i> = <i>U</i>/<i>R</i>',
+   '<i>P</i> = <i>R</i>/<i>U</i>²'
+ ], c:2, pts:5},
+
+{s:'8. Electromagnetism — Curent electric staționar', type:'calc',
+ text:'Un acumulator cu t.e.m. ε = 12 V și rezistența internă <i>r</i> = 1 Ω este conectat la rezistorul extern <i>R</i> = 5 Ω. Determinați curentul <i>I</i>, tensiunea la borne <i>U</i> și puterea disipată pe <i>R</i>.',
+ opts:[
+   '<i>I</i> = 1,5 A; <i>U</i> = 10,5 V; <i>P</i> = 11,25 W',
+   '<i>I</i> = 2,0 A; <i>U</i> = 10,0 V; <i>P</i> = 20 W',
+   '<i>I</i> = 2,4 A; <i>U</i> = 9,6 V; <i>P</i> = 14,4 W',
+   '<i>I</i> = 3,0 A; <i>U</i> = 9,0 V; <i>P</i> = 45 W',
+   '<i>I</i> = 2,0 A; <i>U</i> = 11,0 V; <i>P</i> = 22 W'
+ ], c:1, pts:10,
+ hint:'I = ε/(R+r) = 12/6 = 2 A. U = ε − Ir = 12 − 2 = 10 V. P = I²R = 4·5 = 20 W.'},
+
+/* ══════════════════════════════════════════
+   4. Electromagnetism — Câmpul magnetic
+   ══════════════════════════════════════════ */
+{s:'9. Electromagnetism — Câmpul magnetic', type:'tf',
+ text:'Legea Biot–Savart–Laplace dă elementul de câmp magnetic produs de un element de conductor: d<b>B</b> = (μ₀/4π) · <i>I</i>d<b>l</b> × <b>r̂</b>/<i>r</i>², unde <b>r̂</b> este versor spre punctul de calcul.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'9. Electromagnetism — Câmpul magnetic', type:'mc',
+ text:'Un conductor format din două semi-drepte care formează unghiul β = 120° este parcurs de curentul ℐ = 50 A. Câmpul magnetic <i>B</i> în punctul aflat la distanța <i>r</i> = 5 cm de vârf, pe bisectoare, se calculează cu formula (μ₀/4π = 10⁻⁷ N/A²):',
+ opts:[
+   '<i>B</i> = (μ₀/4π)·(ℐ/<i>a</i>)·(cosα₁ − cosα₂), cu <i>a</i> = <i>r</i>·sin30°',
+   '<i>B</i> = 2·(μ₀/4π)·(ℐ/<i>a</i>)·(cosα₁ − cosα₂), cu <i>a</i> = <i>r</i>·sin60°',
+   '<i>B</i> = (μ₀/2π)·(ℐ/<i>r</i>)',
+   '<i>B</i> = (μ₀/4π)·(2ℐ/<i>r</i>)',
+   '<i>B</i> = 2·(μ₀/4π)·(ℐ/<i>r</i>)·cosβ'
+ ], c:1, pts:5},
+
+{s:'9. Electromagnetism — Câmpul magnetic', type:'calc',
+ text:'Un conductor din două semi-drepte (β = 120°) poartă curentul ℐ = 50 A. Determinați inducția câmpului magnetic <i>B</i> în punctul de pe bisectoare, la distanța <i>r</i> = 5 cm de vârf. (μ₀/4π = 10⁻⁷ N/A²)',
+ opts:[
+   '<i>B</i> = 1,73·10⁻⁴ T',
+   '<i>B</i> = 2,00·10⁻⁴ T',
+   '<i>B</i> = 3,00·10⁻⁴ T',
+   '<i>B</i> = 3,46·10⁻⁴ T',
+   '<i>B</i> = 4,00·10⁻⁴ T'
+ ], c:3, pts:10,
+ hint:'B = 2·(μ₀/4π)·(ℐ/a)·(cosα₁−cosα₂), cu a = r·sin60° = 0,05·0,866 = 0,0433 m; α₁→0°, α₂=120°. cosα₁−cosα₂ = 1+0,5 = 1,5. B = 2·10⁻⁷·50/0,0433·1,5 ≈ 3,46·10⁻⁴ T.'},
+
+/* ══════════════════════════════════════════
+   5. Electromagnetism — Inducție electromagnetică
+   ══════════════════════════════════════════ */
+{s:'10. Electromagnetism — Inducție electromagnetică', type:'tf',
+ text:'Legea inducției electromagnetice Faraday–Lenz: t.e.m. indusă este ε = −dΨ/d<i>t</i>, unde Ψ = <i>N</i>Φ este fluxul total (flux-linkage) al bobinei cu <i>N</i> spire.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'10. Electromagnetism — Inducție electromagnetică', type:'mc',
+ text:'O bobină cu <i>N</i> spire se rotește cu viteza unghiulară ω în câmpul magnetic <i>B</i> uniform. Amplitudinea t.e.m. induse ε₀ este:',
+ opts:[
+   'ε₀ = <i>NBS</i>/ω',
+   'ε₀ = <i>NB</i>ω',
+   'ε₀ = <i>NBS</i>ω',
+   'ε₀ = <i>BS</i>ω/<i>N</i>',
+   'ε₀ = <i>N</i>²<i>BS</i>ω'
+ ], c:2, pts:5},
+
+{s:'10. Electromagnetism — Inducție electromagnetică', type:'calc',
+ text:'O bobină cu <i>N</i> = 200 spire și secțiunea <i>S</i> = 50 cm² se rotește în câmp magnetic omogen <i>B</i> = 0,1 T cu frecvența <i>ν</i> = 50 Hz. Determinați amplitudinea t.e.m. induse ε₀. (ω = 2π<i>ν</i>)',
+ opts:[
+   'ε₀ = 157 V',
+   'ε₀ = 235 V',
+   'ε₀ = 314 V',
+   'ε₀ = 400 V',
+   'ε₀ = 628 V'
+ ], c:2, pts:10,
+ hint:'ω = 2π·50 ≈ 314 rad/s. ε₀ = N·B·S·ω = 200·0,1·50·10⁻⁴·314 = 314 V.'},
+
+/* ══════════════════════════════════════════
+   6. Oscilații amortizate
+   ══════════════════════════════════════════ */
+{s:'11. Oscilații amortizate', type:'tf',
+ text:'Amplitudinea oscilațiilor amortizate scade exponențial după legea <i>A</i>(<i>t</i>) = <i>A</i>₀·e<sup>−β<i>t</i></sup>, iar energia mecanică scade de două ori mai repede: <i>E</i>(<i>t</i>) = <i>E</i>₀·e<sup>−2β<i>t</i></sup>.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'11. Oscilații amortizate', type:'mc',
+ text:'Un oscilator amortizat de masă <i>m</i> = 5 g pierde 60% din energia inițială în <i>t</i> = 50 s. Formula coeficientului de rezistență <i>c</i> (forța de frecare = −<i>cv</i>) este:',
+ opts:[
+   '<i>c</i> = 2<i>m</i>β',
+   '<i>c</i> = <i>m</i>β',
+   '<i>c</i> = 2<i>m</i>β²',
+   '<i>c</i> = <i>m</i>/β',
+   '<i>c</i> = β/<i>m</i>'
+ ], c:0, pts:5},
+
+{s:'11. Oscilații amortizate', type:'calc',
+ text:'Un oscilator amortizat (<i>m</i> = 5 g) pierde 60% din energia inițială în <i>t</i> = 50 s (Δ<i>E</i>/<i>E</i>₀ = −0,6). Determinați coeficientul de rezistență <i>c</i>. (ln 0,4 ≈ −0,9163)',
+ opts:[
+   '<i>c</i> = 5,50·10⁻⁵ kg/s',
+   '<i>c</i> = 7,83·10⁻⁵ kg/s',
+   '<i>c</i> = 9,16·10⁻⁵ kg/s',
+   '<i>c</i> = 11,0·10⁻⁵ kg/s',
+   '<i>c</i> = 13,5·10⁻⁵ kg/s'
+ ], c:2, pts:10,
+ hint:'E/E₀ = e^(−2βt) = 0,4 → β = −ln(0,4)/(2t) = 0,9163/100 = 9,163·10⁻³ s⁻¹. c = 2mβ = 2·5·10⁻³·9,163·10⁻³ = 9,163·10⁻⁵ kg/s.'},
+
+{s:'11. Oscilații amortizate', type:'calc',
+ text:'Un oscilator amortizat cu masa <i>m</i> = 0,5 kg, constanta elastică <i>k</i> = 20 N/m și decrementul logaritmic λ = 0,004. Determinați numărul de oscilații <i>N</i> după care amplitudinea se micșorează de 3 ori față de cea inițială. (ln 3 ≈ 1,099)',
+ opts:[
+   '<i>N</i> = 100',
+   '<i>N</i> = 175',
+   '<i>N</i> = 225',
+   '<i>N</i> = 274',
+   '<i>N</i> = 350'
+ ], c:3, pts:10,
+ hint:'Din N·λ = ln(A₀/Aₙ) → N = ln(3)/λ = 1,099/0,004 = 274,75 ≈ 274.'},
+
+{s:'11. Oscilații amortizate', type:'calc',
+ text:'Un oscilator amortizat are perioada proprie <i>T</i>₀ = 1 s și decrementul logaritmic λ = 0,628. Determinați perioada reală a oscilațiilor amortizate <i>T</i>. (formula: <i>T</i> = <i>T</i>₀√(1 + (λ/2π)²))',
+ opts:[
+   '<i>T</i> = 0,995 s',
+   '<i>T</i> = 1,000 s',
+   '<i>T</i> = 1,005 s',
+   '<i>T</i> = 1,050 s',
+   '<i>T</i> = 1,100 s'
+ ], c:2, pts:10,
+ hint:'(λ/2π)² = (0,628/6,28)² = 0,01. T = 1·√1,01 ≈ 1,005 s.'},
+
+/* ══════════════════════════════════════════
+   7. Interferența luminii
+   ══════════════════════════════════════════ */
+{s:'12. Interferența luminii', type:'tf',
+ text:'Condiția de maxim constructiv la interferența luminii este ca diferența de drum optic să fie un număr întreg de lungimi de undă: Δ = <i>m</i>λ (<i>m</i> = 0, ±1, ±2, ...).',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'12. Interferența luminii', type:'mc',
+ text:'La experiența lui Young (fante duble), interfrangia benzilor de interferență <i>i</i> în funcție de λ, <i>D</i> (distanța fante–ecran) și <i>d</i> (distanța dintre fante) este:',
+ opts:[
+   '<i>i</i> = <i>d</i>λ/<i>D</i>',
+   '<i>i</i> = λ<i>D</i>/<i>d</i>',
+   '<i>i</i> = λ/(<i>Dd</i>)',
+   '<i>i</i> = <i>Dd</i>/λ',
+   '<i>i</i> = λ<i>d</i>/<i>D</i>'
+ ], c:1, pts:5},
+
+{s:'12. Interferența luminii', type:'calc',
+ text:'La experiența lui Young interfrangia este <i>i</i> = 1,5 mm, distanța dintre fante <i>d</i> = 1 mm, distanța fante–ecran <i>D</i> = 3 m. Determinați lungimea de undă λ a luminii.',
+ opts:[
+   'λ = 0,3 μm',
+   'λ = 0,5 μm',
+   'λ = 0,6 μm',
+   'λ = 0,7 μm',
+   'λ = 1,5 μm'
+ ], c:1, pts:10,
+ hint:'λ = i·d/D = 1,5·10⁻³·10⁻³/3 = 5·10⁻⁷ m = 0,5 μm.'},
+
+{s:'12. Interferența luminii', type:'calc',
+ text:'La interferența pe o oglindă biprismă Fresnel, interfrangia este <i>i</i> = 2 mm, distanța dintre surse virtuale <i>l</i> = 0,8 mm, lungimea de undă λ = 640 nm. Determinați distanța <i>D</i> de la surse la ecran.',
+ opts:[
+   '<i>D</i> = 1,5 m',
+   '<i>D</i> = 2,0 m',
+   '<i>D</i> = 2,5 m',
+   '<i>D</i> = 3,0 m',
+   '<i>D</i> = 3,6 m'
+ ], c:2, pts:10,
+ hint:'i = λD/l → D = i·l/λ = 2·10⁻³·0,8·10⁻³/(640·10⁻⁹) = 2,5 m.'},
+
+/* ══════════════════════════════════════════
+   8. Difracția luminii
+   ══════════════════════════════════════════ */
+{s:'13. Difracția luminii', type:'tf',
+ text:'Condiția de maxim principal la difracția pe o rețea de difracție este <i>d</i>·sin θ = <i>m</i>λ (<i>m</i> = 0, ±1, ±2, ...), unde <i>d</i> este pasul rețelei.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'13. Difracția luminii', type:'mc',
+ text:'La experiența lui Young cu fante duble, pe un ecran la distanța <i>D</i> se observă <i>N</i> franje pe lungimea totală <i>l</i>. Distanța dintre fante <i>d</i> este:',
+ opts:[
+   '<i>d</i> = Nλ<i>D</i>/<i>l</i>',
+   '<i>d</i> = λ<i>D</i>/<i>l</i>',
+   '<i>d</i> = <i>l</i>/(<i>N</i>λ<i>D</i>)',
+   '<i>d</i> = Nλ<i>l</i>/<i>D</i>',
+   '<i>d</i> = λ<i>l</i>/(<i>ND</i>)'
+ ], c:0, pts:5,
+ hint:'i = l/N; i = λD/d → d = λD·N/l = NλD/l.'},
+
+{s:'13. Difracția luminii', type:'calc',
+ text:'La Young cu fante duble se observă <i>N</i> = 10 franje pe lungimea <i>l</i> = 1 cm a ecranului, <i>D</i> = 1 m, λ = 0,7 μm. Determinați distanța <i>d</i> dintre fante.',
+ opts:[
+   '<i>d</i> = 0,5 mm',
+   '<i>d</i> = 0,7 mm',
+   '<i>d</i> = 1,0 mm',
+   '<i>d</i> = 1,4 mm',
+   '<i>d</i> = 2,0 mm'
+ ], c:1, pts:10,
+ hint:'i = l/N = 10⁻²/10 = 10⁻³ m. d = λD/i = 0,7·10⁻⁶·1/10⁻³ = 7·10⁻⁴ m = 0,7 mm.'},
+
+/* ══════════════════════════════════════════
+   9. Polarizarea luminii
+   ══════════════════════════════════════════ */
+{s:'14. Polarizarea luminii', type:'tf',
+ text:'Legea lui Malus: intensitatea luminii linear polarizate după trecerea printr-un analizor este <i>I</i> = <i>I</i>₀·cos²φ, unde φ este unghiul dintre direcția de polarizare și axa analizorului.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'14. Polarizarea luminii', type:'mc',
+ text:'Lumina natural-polarizată trece succesiv prin două polarizoare cu axele sub unghiul φ = 60° față de prima direcție de polarizare. Raportul intensității luminii ieșite față de intensitatea inițială a luminii naturale este:',
+ opts:[
+   '<i>I</i>/<i>I</i>₀ = 1/4',
+   '<i>I</i>/<i>I</i>₀ = cos²60° = 1/4',
+   '<i>I</i>/<i>I</i>₀ = ½·cos²60° = 1/8',
+   '<i>I</i>/<i>I</i>₀ = cos60° = 1/2',
+   '<i>I</i>/<i>I</i>₀ = ½·cos60° = 1/4'
+ ], c:2, pts:5,
+ hint:'Primul polarizor lasă I₁ = I₀/2 (lumină naturală). Al doilea (Malus): I = I₁·cos²60° = (I₀/2)·(1/4) = I₀/8.'},
+
+/* ══════════════════════════════════════════
+   10. Fizică modernă — Corp negru și Compton
+   ══════════════════════════════════════════ */
+{s:'15. Fizică modernă — Corp negru și Compton', type:'tf',
+ text:'Legea deplasării Wien: λ<sub>m</sub>·<i>T</i> = <i>b</i> = 2,9·10⁻³ m·K. La creșterea temperaturii maximul de emisie se deplasează spre lungimi de undă mai scurte.',
+ opts:['Adevăr','Fals'], c:0, pts:4},
+
+{s:'15. Fizică modernă — Corp negru și Compton', type:'mc',
+ text:'Doi corpi negri cu temperaturile <i>T</i>₁ = 1600 K și <i>T</i>₂ = 2000 K. Raportul radianțelor lor <i>R</i>₂/<i>R</i>₁ (legea Stefan–Boltzmann) este:',
+ opts:[
+   '1,25',
+   '1,56',
+   '1,95',
+   '2,44',
+   '3,05'
+ ], c:3, pts:5,
+ hint:'R₂/R₁ = (T₂/T₁)⁴ = (2000/1600)⁴ = 1,25⁴ ≈ 2,44.'},
+
+{s:'15. Fizică modernă — Corp negru și Compton', type:'calc',
+ text:'Doi corpi negri cu <i>T</i>₁ = 1600 K și <i>T</i>₂ = 2000 K. Determinați |Δλ| = |λ₂ − λ₁| a lungimilor de undă ale maximelor de emisie. (<i>b</i> = 2,9·10⁻³ m·K)',
+ opts:[
+   '|Δλ| = 200 nm',
+   '|Δλ| = 362 nm',
+   '|Δλ| = 450 nm',
+   '|Δλ| = 500 nm',
+   '|Δλ| = 580 nm'
+ ], c:1, pts:10,
+ hint:'λ₁ = b/T₁ = 2,9·10⁻³/1600 ≈ 1812 nm. λ₂ = b/T₂ = 2,9·10⁻³/2000 = 1450 nm. |Δλ| = 362 nm.'},
+
+{s:'15. Fizică modernă — Corp negru și Compton', type:'calc',
+ text:'La împrăștierea Compton, un foton cu energia <i>E</i>₀ = 0,25 MeV cedează energie unui electron, energia sa devenind <i>E</i>₁ = 0,2 MeV. Determinați unghiul β de împrăștiere al fotonului. (Λ<sub>C</sub> = 2,426 pm; Δλ = Λ<sub>C</sub>(1 − cosβ); <i>hc</i> = 1,242·10³ eV·nm)',
+ opts:[
+   'β = 30°',
+   'β = 45°',
+   'β = 53°',
+   'β = 61°',
+   'β = 75°'
+ ], c:3, pts:10,
+ hint:'λ₀ = hc/E₀ = 1242/(0,25·10⁶) eV·nm / eV = 4,968 pm. λ₁ = hc/E₁ = 6,21 pm. Δλ = 1,242 pm. cosβ = 1 − Δλ/Λ_C = 1 − 1,242/2,426 = 0,487. β ≈ 61°.'},
+
+]
+
+let done=false;
+const totalPts=Q.reduce((a,q)=>a+q.pts,0);
+let curSec='';
+
+function render(){
+  const w=document.getElementById('wrap');
+  let h='';
+  curSec='';
+  Q.forEach((q,i)=>{
+    if(q.s!==curSec){curSec=q.s;h+=`<div class="section-hdr">${q.s}</div>`;}
+    const badge=q.type==='calc'
+      ?'<span class="bcalc">Calculator</span>'
+      :q.type==='tf'
+        ?'<span class="btf">Adevăr / Fals</span>'
+        :'';
+    h+=`<div class="item" id="item-${i}">
+      <div class="ih"><span class="inum">Itemul ${i+1}.</span>${badge}</div>
+      <div class="iq">${q.text}</div>`;
+    if(q.hint){h+=`<div class="hint">💡 Indiciu: ${q.hint}</div>`;}
+    h+=`<div class="opts" style="margin-top:.75rem">`;
+    q.opts.forEach((o,j)=>{
+      h+=`<label class="opt" id="opt-${i}-${j}" onclick="pick(${i},${j})">
+        <input type="radio" name="q${i}" value="${j}">
+        <span class="olabel">${o}</span>
+      </label>`;
+    });
+    h+=`</div>
+      <div class="ifoot">
+        <span class="ipts">Punctajul oferit: <strong>${q.pts} puncte</strong></span>
+        <span class="ifeed" id="feed-${i}"></span>
+      </div>
+    </div>`;
+  });
+  w.innerHTML=h;
+}
+
+function pick(qi,oi){
+  if(done)return;
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.remove('sel'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('sel');
+}
+
+function submit(){
+  if(done)return;
+  const ans=Q.map((_,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    return sel?parseInt(sel.value):-1;
+  });
+  const unanswered=ans.filter(a=>a===-1).length;
+  if(unanswered>0&&!confirm(`Ai ${unanswered} item(i) fără răspuns. Continui?`))return;
+  done=true;
+  let score=0;
+  Q.forEach((q,i)=>{
+    const chosen=ans[i];
+    const item=document.getElementById(`item-${i}`);
+    const feed=document.getElementById(`feed-${i}`);
+    const isOk=chosen===q.c;
+    if(isOk)score+=q.pts;
+    item.classList.add(isOk?'graded-ok':'graded-fail');
+    if(chosen>=0){
+      const selOpt=document.getElementById(`opt-${i}-${chosen}`);
+      if(selOpt)selOpt.classList.add(isOk?'good':'bad');
+    }
+    if(!isOk){
+      const corrOpt=document.getElementById(`opt-${i}-${q.c}`);
+      if(corrOpt)corrOpt.classList.add('good');
+    }
+    feed.innerHTML=isOk
+      ?'<span class="ifeed ok">✓ Corect</span>'
+      :'<span class="ifeed fail">✗ Incorect</span>';
+  });
+  const pct=Math.round(score/totalPts*100);
+  const msg=pct>=90?'Excelent! 🎓':pct>=70?'Bine! Continuă să înveți.':pct>=50?'Satisfăcător. Mai exersează.':'Necesită mai multă pregătire.';
+  document.getElementById('snum').textContent=score;
+  document.getElementById('tpts').textContent=totalPts;
+  document.getElementById('smsg').textContent=`${pct}% — ${msg}`;
+  document.getElementById('sbar').style.display='flex';
+  document.getElementById('btn').disabled=true;
+  document.getElementById('sbar').scrollIntoView({behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>

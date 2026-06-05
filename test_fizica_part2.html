@@ -1,0 +1,151 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.tw{max-width:740px;padding:.5rem 0 3rem;font-family:var(--font-sans)}
+.th{padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:2px solid #1565C0}
+.th h1{font-size:17px;font-weight:500;color:var(--color-text-primary);letter-spacing:.8px;text-transform:uppercase}
+.th-meta{font-size:12.5px;color:var(--color-text-secondary);margin-top:5px}
+.section-hdr{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--color-text-secondary);margin:1.5rem 0 .75rem;padding-left:8px;border-left:3px solid #1565C0}
+.item{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.1rem 1.25rem;margin-bottom:1rem;background:var(--color-background-primary);transition:border-color .2s}
+.item.graded-ok{border-color:#2e7d32!important}
+.item.graded-fail{border-color:#c62828!important}
+.ih{display:flex;align-items:center;gap:8px;margin-bottom:.65rem;flex-wrap:wrap}
+.inum{font-size:12px;font-weight:500;color:var(--color-text-secondary)}
+.bcalc{background:#1565C0;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.btf{background:#5c35b1;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.iq{font-size:13.5px;color:var(--color-text-primary);line-height:1.65;margin-bottom:.9rem}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:flex;align-items:flex-start;gap:8px;padding:6px 10px;border-radius:6px;cursor:pointer;border:0.5px solid transparent;transition:background .12s}
+.opt:hover{background:var(--color-background-secondary)}
+.opt.sel{background:rgba(21,101,192,0.08);border-color:#1565C0}
+.opt.good{background:rgba(46,125,50,0.1)!important;border-color:#2e7d32!important}
+.opt.bad{background:rgba(198,40,40,0.1)!important;border-color:#c62828!important}
+.opt input[type=radio]{margin-top:3px;accent-color:#1565C0;flex-shrink:0}
+.olabel{font-size:13px;color:var(--color-text-primary);line-height:1.5}
+.ifoot{margin-top:.75rem;border-top:0.5px solid var(--color-border-tertiary);padding-top:.55rem;display:flex;align-items:center;justify-content:space-between}
+.ipts{font-size:11.5px;color:var(--color-text-secondary)}
+.ifeed{font-size:12px;font-weight:500}
+.ifeed.ok{color:#2e7d32}
+.ifeed.fail{color:#c62828}
+.sbmt{display:flex;justify-content:center;margin-top:1.75rem}
+.sbmt button{padding:10px 40px;font-size:14px;font-weight:500;background:#1565C0;color:#fff;border:none;border-radius:var(--border-radius-md);cursor:pointer;letter-spacing:.3px}
+.sbmt button:hover{background:#1976D2}
+.sbmt button:disabled{background:#90a4ae;cursor:default}
+.sbar{background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.9rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.2rem}
+.snum{font-size:30px;font-weight:500;color:#1565C0}
+.slabel{font-size:12.5px;color:var(--color-text-secondary)}
+.smsg{font-size:13px;color:var(--color-text-primary);margin-top:2px}
+</style>
+
+<h2 class="sr-only">Continuarea testului de fizică — itemi 26–35 din mecanica fluidelor, termodinamică, electromagnetism, optică și fizică modernă.</h2>
+
+<div class="tw">
+  <div class="th">
+    <h1>Test de fizică — Continuare (Itemi 26–35)</h1>
+    <p class="th-meta">Guțuleac Leonid · Curs universitar &nbsp;|&nbsp; Mecanica fluidelor, Termodinamică avansată, Electromagnetism, Optică, Fizică modernă</p>
+  </div>
+  <div id="sbar2" class="sbar" style="display:none">
+    <div class="snum" id="snum2">0</div>
+    <div>
+      <div class="slabel">puncte din <span id="tpts2"></span> posibile</div>
+      <div class="smsg" id="smsg2"></div>
+    </div>
+  </div>
+  <div id="wrap2"></div>
+  <div class="sbmt"><button id="btn2" onclick="submit2()">Verifică răspunsurile</button></div>
+</div>
+
+<script>
+const Q2=[
+  {s:'1. Mecanica fluidelor',type:'tf',text:'Ecuația de continuitate a unui fluid incompresibil exprimă conservarea debitului volumic: <i>S</i>₁<i>v</i>₁ = <i>S</i>₂<i>v</i>₂.',opts:['Adevăr','Fals'],c:0,pts:4},
+  {s:'1. Mecanica fluidelor',type:'mc',text:'Legea lui Bernoulli pentru un fluid ideal în mișcare stationară exprimă conservarea:',opts:['Impulsului','Masei','Energiei mecanice totale pe unitate de volum','Forței de presiune','Temperaturii de-a lungul liniei de curent'],c:2,pts:5},
+  {s:'1. Mecanica fluidelor',type:'calc',text:'Apa circulă printr-o conductă cu secțiunea <i>S</i>₁ = 4 cm² cu viteza <i>v</i>₁ = 3 m/s. Determinați viteza apei în zona îngustată cu secțiunea <i>S</i>₂ = 2 cm². (fluid incompresibil)',opts:['<i>v</i>₂ = 1,5 m/s','<i>v</i>₂ = 3 m/s','<i>v</i>₂ = 6 m/s','<i>v</i>₂ = 12 m/s','<i>v</i>₂ = 9 m/s'],c:2,pts:10},
+  {s:'2. Termodinamică avansată',type:'mc',text:'Primul principiu al termodinamicii afirmă că variația energiei interne a unui sistem este egală cu:',opts:['Lucrul efectuat de sistem','Căldura cedată mediului','Suma algebrică a căldurii primite și a lucrului efectuat asupra sistemului','Produsul dintre presiune și volum','Diferența dintre căldura primită și cea cedată'],c:2,pts:5},
+  {s:'2. Termodinamică avansată',type:'tf',text:'Într-un proces adiabatic ideal, schimbul de căldură cu mediul exterior este zero.',opts:['Adevăr','Fals'],c:0,pts:4},
+  {s:'2. Termodinamică avansată',type:'calc',text:'Un gaz ideal diatomic (<i>i</i> = 5) cu ν = 1 mol se dilată izobar de la <i>T</i>₁ = 300 K la <i>T</i>₂ = 500 K. Determinați lucrul mecanic efectuat de gaz. (<i>R</i> = 8,31 J/(mol·K))',opts:['<i>W</i> = 831 J','<i>W</i> = 1245 J','<i>W</i> = 1662 J','<i>W</i> = 2493 J','<i>W</i> = 4157 J'],c:2,pts:10},
+  {s:'3. Electromagnetism avansat',type:'tf',text:'Câmpul electric al unui condensator plan între plăcile sale este uniform.',opts:['Adevăr','Fals'],c:0,pts:4},
+  {s:'3. Electromagnetism avansat',type:'calc',text:'Un conductor de rezistivitate ρ = 1,7·10⁻⁸ Ω·m, lungime <i>l</i> = 10 m și secțiunea <i>S</i> = 1 mm² = 10⁻⁶ m². Determinați rezistența electrică a conductorului.',opts:['<i>R</i> = 0,017 Ω','<i>R</i> = 0,17 Ω','<i>R</i> = 1,7·10⁻³ Ω','<i>R</i> = 1,7 Ω','<i>R</i> = 17 Ω'],c:1,pts:10},
+  {s:'3. Electromagnetism avansat',type:'mc',text:'Forța Ampere care acționează asupra unui conductor de lungime <i>l</i>, parcurs de curentul <i>I</i>, aflat într-un câmp magnetic <i>B</i>, are modulul:',opts:['<i>F</i> = <i>qvB</i>','<i>F</i> = <i>BIl</i> sin α','<i>F</i> = <i>BIl</i> cos α','<i>F</i> = <i>B</i>²<i>Il</i>','<i>F</i> = <i>BI</i>/<i>l</i>'],c:1,pts:5},
+  {s:'4. Optică și fizică modernă',type:'tf',text:'Difracția luminii confirmă natura ondulativă a luminii.',opts:['Adevăr','Fals'],c:0,pts:4},
+  {s:'4. Optică și fizică modernă',type:'mc',text:'Condiția pentru maximul principal de interferență (experiența Young cu două fante) este:',opts:['Δ = (2<i>k</i>+1)·λ/2','Δ = <i>k</i>·λ (k = 0, ±1, ±2, …)','Δ = <i>k</i>·λ/4','Δ = 2<i>k</i>·λ','Δ = <i>k</i>·λ² /<i>d</i>'],c:1,pts:5},
+  {s:'4. Optică și fizică modernă',type:'calc',text:'Într-o experiență de interferență cu două fante distanțate prin <i>d</i> = 0,5 mm, franjele de interferență pe un ecran aflat la <i>L</i> = 1 m au lărgimea Δ<i>x</i> = 1 mm. Determinați lungimea de undă a luminii folosite. (λ = Δ<i>x</i>·<i>d</i>/<i>L</i>)',opts:['λ = 400 nm','λ = 500 nm','λ = 550 nm','λ = 600 nm','λ = 700 nm'],c:1,pts:10},
+  {s:'4. Optică și fizică modernă',type:'tf',text:'Efectul fotoelectric extern a demonstrat natura corpusculară a luminii (existența fotonilor).',opts:['Adevăr','Fals'],c:0,pts:4},
+  {s:'4. Optică și fizică modernă',type:'mc',text:'Relația De Broglie asociază oricărei particule materiale cu impulsul <i>p</i> o lungime de undă λ exprimată prin:',opts:['λ = <i>h</i>·<i>p</i>','λ = <i>h</i> / <i>p</i>','λ = <i>p</i> / <i>h</i>','λ = <i>h</i>·<i>m</i>·<i>v</i>²','λ = <i>h</i> / <i>mv</i>²'],c:1,pts:5},
+  {s:'4. Optică și fizică modernă',type:'calc',text:'Fotonul luminii cu lungimea de undă λ = 500 nm = 5·10⁻⁷ m are energia <i>E</i> = <i>hc</i>/λ. Determinați energia fotonului. (<i>h</i> = 6,63·10⁻³⁴ J·s, <i>c</i> = 3·10⁸ m/s)',opts:['<i>E</i> ≈ 2,4·10⁻¹⁹ J','<i>E</i> ≈ 3,0·10⁻¹⁹ J','<i>E</i> ≈ 3,98·10⁻¹⁹ J','<i>E</i> ≈ 5,0·10⁻¹⁹ J','<i>E</i> ≈ 1,2·10⁻¹⁸ J'],c:2,pts:10}
+];
+
+let done2=false;
+const totalPts2=Q2.reduce((a,q)=>a+q.pts,0);
+let curSec2='';
+
+function render2(){
+  const w=document.getElementById('wrap2');
+  let h='';
+  Q2.forEach((q,i)=>{
+    const gi=i+26;
+    if(q.s!==curSec2){curSec2=q.s;h+=`<div class="section-hdr">${q.s}</div>`}
+    const badge=q.type==='calc'?`<span class="bcalc">Calculator</span>`:q.type==='tf'?`<span class="btf">Adevăr / Fals</span>`:'';
+    h+=`<div class="item" id="item2-${i}">
+      <div class="ih"><span class="inum">Itemul ${gi}.</span>${badge}</div>
+      <div class="iq">${q.text}</div>
+      <div class="opts">`;
+    q.opts.forEach((o,j)=>{
+      h+=`<label class="opt" id="opt2-${i}-${j}" onclick="pick2(${i},${j})">
+        <input type="radio" name="q2_${i}" value="${j}">
+        <span class="olabel">${o}</span>
+      </label>`;
+    });
+    h+=`</div>
+      <div class="ifoot">
+        <span class="ipts">Punctajul oferit pentru item: <strong>${q.pts} puncte</strong></span>
+        <span class="ifeed" id="feed2-${i}"></span>
+      </div>
+    </div>`;
+  });
+  w.innerHTML=h;
+}
+
+function pick2(qi,oi){
+  if(done2)return;
+  document.querySelectorAll(`[id^="opt2-${qi}-"]`).forEach(el=>el.classList.remove('sel'));
+  document.getElementById(`opt2-${qi}-${oi}`).classList.add('sel');
+}
+
+function submit2(){
+  if(done2)return;
+  let score=0,ans=[];
+  Q2.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q2_${i}"]:checked`);
+    ans.push(sel?parseInt(sel.value):-1);
+  });
+  const unanswered=ans.filter(a=>a===-1).length;
+  if(unanswered>0&&!confirm(`Ai ${unanswered} item(i) fără răspuns. Continui?`))return;
+  done2=true;
+  Q2.forEach((q,i)=>{
+    const chosen=ans[i];
+    const isOk=chosen===q.c;
+    if(isOk)score+=q.pts;
+    document.getElementById(`item2-${i}`).classList.add(isOk?'graded-ok':'graded-fail');
+    if(chosen>=0){
+      const s=document.getElementById(`opt2-${i}-${chosen}`);
+      if(s)s.classList.add(isOk?'good':'bad');
+    }
+    if(!isOk){
+      const co=document.getElementById(`opt2-${i}-${q.c}`);
+      if(co)co.classList.add('good');
+    }
+    const feed=document.getElementById(`feed2-${i}`);
+    feed.innerHTML=isOk?'<span class="ifeed ok">✓ Corect</span>':'<span class="ifeed fail">✗ Incorect</span>';
+  });
+  const pct=Math.round(score/totalPts2*100);
+  const msg=pct>=90?'Excelent! 🎓':pct>=70?'Bine! Continuă să înveți.':pct>=50?'Satisfăcător. Mai exersează.':'Necesită mai multă pregătire.';
+  document.getElementById('snum2').textContent=score;
+  document.getElementById('tpts2').textContent=totalPts2;
+  document.getElementById('smsg2').textContent=`${pct}% — ${msg}`;
+  document.getElementById('sbar2').style.display='flex';
+  document.getElementById('btn2').disabled=true;
+  document.getElementById('sbar2').scrollIntoView({behavior:'smooth'});
+}
+
+render2();
+</script>

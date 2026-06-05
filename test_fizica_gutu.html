@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test de fizică — Guțuleac Leonid</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f7fa;min-height:100vh;padding:2rem 1rem}
+.tw{max-width:740px;margin:0 auto;padding:.5rem 0 3rem}
+.th{padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:2px solid #1565C0}
+.th h1{font-size:17px;font-weight:500;color:#1a1a2e;letter-spacing:.8px;text-transform:uppercase}
+.th-meta{font-size:12.5px;color:#555;margin-top:5px}
+.section-hdr{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:#555;margin:1.5rem 0 .75rem;padding-left:8px;border-left:3px solid #1565C0}
+.item{border:.5px solid #dde1e8;border-radius:10px;padding:1.1rem 1.25rem;margin-bottom:1rem;background:#fff;transition:border-color .2s}
+.item.graded-ok{border-color:#2e7d32!important}
+.item.graded-fail{border-color:#c62828!important}
+.ih{display:flex;align-items:center;gap:8px;margin-bottom:.65rem;flex-wrap:wrap}
+.inum{font-size:12px;font-weight:500;color:#666}
+.bcalc{background:#1565C0;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.btf{background:#5c35b1;color:#fff;font-size:11px;font-weight:500;padding:2px 9px;border-radius:3px}
+.iq{font-size:13.5px;color:#222;line-height:1.65;margin-bottom:.9rem}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:flex;align-items:flex-start;gap:8px;padding:6px 10px;border-radius:6px;cursor:pointer;border:.5px solid transparent;transition:background .12s}
+.opt:hover{background:#f0f4f8}
+.opt.sel{background:rgba(21,101,192,.08);border-color:#1565C0}
+.opt.good{background:rgba(46,125,50,.1)!important;border-color:#2e7d32!important}
+.opt.bad{background:rgba(198,40,40,.1)!important;border-color:#c62828!important}
+.opt input[type=radio]{margin-top:3px;accent-color:#1565C0;flex-shrink:0}
+.olabel{font-size:13px;color:#222;line-height:1.5}
+.ifoot{margin-top:.75rem;border-top:.5px solid #dde1e8;padding-top:.55rem;display:flex;align-items:center;justify-content:space-between}
+.ipts{font-size:11.5px;color:#666}
+.ifeed{font-size:12px;font-weight:500}
+.ifeed.ok{color:#2e7d32}
+.ifeed.fail{color:#c62828}
+.sbmt{display:flex;justify-content:center;margin-top:1.75rem}
+.sbmt button{padding:10px 40px;font-size:14px;font-weight:500;background:#1565C0;color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:.3px}
+.sbmt button:hover{background:#1976D2}
+.sbmt button:disabled{background:#90a4ae;cursor:default}
+.sbar{background:#f0f4f8;border:.5px solid #c5cdd8;border-radius:10px;padding:.9rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.2rem}
+.snum{font-size:30px;font-weight:500;color:#1565C0}
+.slabel{font-size:12.5px;color:#555}
+.smsg{font-size:13px;color:#222;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="tw">
+  <div class="th">
+    <h1>Test de fizică</h1>
+    <p class="th-meta">Guțuleac Leonid · Curs universitar &nbsp;|&nbsp; 25 itemi · Mecanică clasică, Fizică moleculară, Electromagnetism, Oscilații, Optică</p>
+  </div>
+  <div id="sbar" class="sbar" style="display:none">
+    <div class="snum" id="snum">0</div>
+    <div>
+      <div class="slabel">puncte din <span id="tpts"></span> posibile</div>
+      <div class="smsg" id="smsg"></div>
+    </div>
+  </div>
+  <div id="wrap"></div>
+  <div class="sbmt"><button id="btn" onclick="submit()">Verifică răspunsurile</button></div>
+</div>
+
+<script>
+const Q=[
+/* ── 1. Mecanica clasică ─────────────────────────────────── */
+{s:'1. Mecanica clasică',type:'tf',
+ text:'Accelerația tangențială a unui corp care execută mișcare circulară uniformă este zero.',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'1. Mecanica clasică',type:'tf',
+ text:'La aruncarea verticală în sus, viteza instantanee a corpului în punctul cel mai înalt al traiectoriei este zero.',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'1. Mecanica clasică',type:'mc',
+ text:'Ecuația de mișcare a unui punct material este <i>x</i> = <i>At</i> + <i>Bt</i>². Accelerația acestuia este:',
+ opts:['<i>a</i> = <i>A</i>','<i>a</i> = 2<i>B</i>','<i>a</i> = <i>B</i>','<i>a</i> = <i>A</i> + <i>B</i>','<i>a</i> = 2<i>A</i>'],
+ c:1,pts:5},
+{s:'1. Mecanica clasică',type:'mc',
+ text:'Care din expresiile de mai jos reprezintă corect energia cinetică de rotație a unui corp rigid?',
+ opts:['E<sub>rot</sub> = <i>I</i>ω','E<sub>rot</sub> = <i>I</i>ω²/2','E<sub>rot</sub> = <i>m</i>ω²/2','E<sub>rot</sub> = <i>mv</i>²/2','E<sub>rot</sub> = <i>I</i>²ω/2'],
+ c:1,pts:5},
+{s:'1. Mecanica clasică',type:'calc',
+ text:'Ecuația de mișcare a unui punct material este <i>x</i> = <i>At</i> + <i>Bt</i>², unde <i>A</i> = 4 m/s și <i>B</i> = −0,05 m/s². Determinați momentul de timp <i>t</i> la care viteza punctului devine zero.',
+ opts:['<i>t</i> = 20 s','<i>t</i> = 30 s','<i>t</i> = 40 s','<i>t</i> = 50 s','<i>t</i> = 80 s'],
+ c:2,pts:10},
+{s:'1. Mecanica clasică',type:'calc',
+ text:'Viteza unui corp se modifică uniform de la <i>v</i>₁ = 25 m/s la <i>v</i>₂ = 15 m/s pe distanța <i>l</i> = 40 m. Determinați durata deplasării <i>t</i> și accelerația <i>a</i>.',
+ opts:['<i>t</i> = 2 s, <i>a</i> = −5 m/s²','<i>t</i> = 3 s, <i>a</i> = −3,3 m/s²','<i>t</i> = 2 s, <i>a</i> = −4 m/s²','<i>t</i> = 4 s, <i>a</i> = −2,5 m/s²','<i>t</i> = 1 s, <i>a</i> = −10 m/s²'],
+ c:0,pts:10},
+{s:'1. Mecanica clasică',type:'tf',
+ text:'Impulsul (cantitatea de mișcare) unui sistem mecanic izolat se conservă în timp.',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+
+/* ── 2. Fizica moleculară și termodinamica ───────────────── */
+{s:'2. Fizica moleculară și termodinamica',type:'tf',
+ text:'Procesul izobar al gazului ideal se desfășoară la presiune constantă.',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'tf',
+ text:'Căldura molară izocorică a unui gaz ideal cu <i>i</i> grade de libertate este <i>C<sub>v</sub></i> = <i>iR</i>/2.',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'mc',
+ text:'Care din expresiile de mai jos reprezintă corect viteza medie a moleculelor unui gaz ideal cu masa molară <i>M</i> la temperatura <i>T</i>?',
+ opts:['<i>v̄</i> = √(2<i>RT</i>/<i>M</i>)','<i>v̄</i> = √(8<i>RT</i>/π<i>M</i>)','<i>v̄</i> = √(3<i>RT</i>/<i>M</i>)','<i>v̄</i> = <i>RT</i>/<i>M</i>','<i>v̄</i> = √(<i>k<sub>B</sub>T</i>/<i>m</i>)'],
+ c:1,pts:5},
+{s:'2. Fizica moleculară și termodinamica',type:'tf',
+ text:'În procesul izoterm al gazului ideal variația energiei interne este egală cu zero (ΔU = 0).',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'2. Fizica moleculară și termodinamica',type:'calc',
+ text:'Determinați masa de azot (<i>M</i> = 28 g/mol) conținută într-un recipient cu volumul <i>V</i> = 8 l, la temperatura <i>T</i> = 300 K și presiunea <i>P</i> = 2·10⁵ Pa. (<i>R</i> = 8,31 J/(mol·K))',
+ opts:['<i>m</i> = 9 g','<i>m</i> = 14 g','<i>m</i> = 18 g','<i>m</i> = 28 g','<i>m</i> = 32 g'],
+ c:2,pts:10},
+{s:'2. Fizica moleculară și termodinamica',type:'calc',
+ text:'Un gaz ideal este comprimat izotermic de la <i>V</i>₁ = 5 l la <i>V</i>₂ = 2,5 l, la presiunea inițială <i>P</i>₁ = 1,013·10⁵ Pa. Determinați lucrul mecanic efectuat de gaz. (ln 0,5 = −0,693)',
+ opts:['<i>L</i> = +506 J','<i>L</i> = −351 J','<i>L</i> = +351 J','<i>L</i> = −506 J','<i>L</i> = −175 J'],
+ c:1,pts:10},
+{s:'2. Fizica moleculară și termodinamica',type:'calc',
+ text:'Determinați viteza medie a moleculelor de oxigen O₂ (<i>M</i> = 32 g/mol) la temperatura <i>T</i> = 273 K (condiții normale). (<i>R</i> = 8,31 J/(mol·K))',
+ opts:['<i>v̄</i> = 325 m/s','<i>v̄</i> = 376 m/s','<i>v̄</i> = 425 m/s','<i>v̄</i> = 493 m/s','<i>v̄</i> = 560 m/s'],
+ c:2,pts:10},
+
+/* ── 3. Electromagnetism ─────────────────────────────────── */
+{s:'3. Electromagnetism',type:'tf',
+ text:'Sarcina electrică a unui corp este invariantă față de referențialul de observație (nu depinde de viteza observatorului).',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'3. Electromagnetism',type:'mc',
+ text:'Intensitatea câmpului electric creat de o sarcină punctiformă <i>q</i> la distanța <i>r</i> în vid este dată de relația:',
+ opts:['<i>E</i> = <i>kq</i>/<i>r</i>','<i>E</i> = <i>kq</i>/<i>r</i>²','<i>E</i> = <i>kq</i>²/<i>r</i>²','<i>E</i> = <i>q</i>/(4πε₀<i>r</i>³)','<i>E</i> = <i>kq</i>·<i>r</i>'],
+ c:1,pts:5},
+{s:'3. Electromagnetism',type:'calc',
+ text:'În trei vârfuri ale unui dreptunghi cu laturile <i>a</i> = 10 cm și <i>b</i> = 15 cm se află sarcini electrice punctiforme egale <i>q</i> = 2 nC. Determinați intensitatea câmpului electric în al patrulea vârf (cel gol). (<i>k</i> = 9·10⁹ N·m²/C²)',
+ opts:['<i>E</i> = 800 V/m','<i>E</i> = 1261 V/m','<i>E</i> = 2107 V/m','<i>E</i> ≈ 2455 V/m','<i>E</i> = 3600 V/m'],
+ c:3,pts:10},
+{s:'3. Electromagnetism',type:'tf',
+ text:'Forța Lorentz acționează numai asupra sarcinilor electrice aflate în mișcare într-un câmp magnetic (nu acționează asupra sarcinilor în repaus).',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'3. Electromagnetism',type:'mc',
+ text:'Fluxul magnetic Φ printr-o buclă plană de suprafață <i>S</i> aflată în câmp magnetic uniform <i>B</i>, normala la suprafață formând unghiul α cu <i>B</i>, este:',
+ opts:['Φ = <i>B</i>·<i>S</i>·sin α','Φ = <i>B</i>·<i>S</i>·cos α','Φ = <i>B</i>/<i>S</i>','Φ = <i>B</i>²·<i>S</i>','Φ = <i>B</i>·<i>S</i>·tan α'],
+ c:1,pts:5},
+
+/* ── 4. Oscilații și unde ─────────────────────────────────── */
+{s:'4. Oscilații și unde',type:'tf',
+ text:'Decrementul logaritmic de amortizare λ reprezintă logaritmul natural al raportului a două amplitudini consecutive ale oscilațiilor amortizate (λ = ln(Aₙ/Aₙ₊₁)).',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'4. Oscilații și unde',type:'mc',
+ text:'Pulsația proprie ω₀ a unui oscilator liniar cu masa <i>m</i> și constanta elastică <i>k</i> este:',
+ opts:['ω₀ = <i>k</i>/<i>m</i>','ω₀ = √(<i>k</i>/<i>m</i>)','ω₀ = <i>m</i>/<i>k</i>','ω₀ = √(<i>m</i>/<i>k</i>)','ω₀ = <i>m</i>·<i>k</i>'],
+ c:1,pts:5},
+{s:'4. Oscilații și unde',type:'calc',
+ text:'Un oscilator amortizat are masa <i>m</i> = 0,5 kg, constanta elastică <i>k</i> = 20 N/m și decrementul logaritmic λ = 0,004. Determinați numărul de oscilații <i>N</i> după care amplitudinea se micșorează de 3 ori față de cea inițială. (ln 3 ≈ 1,099)',
+ opts:['<i>N</i> = 100','<i>N</i> = 175','<i>N</i> = 225','<i>N</i> = 274','<i>N</i> = 350'],
+ c:3,pts:10},
+
+/* ── 5. Optică și fizică modernă ─────────────────────────── */
+{s:'5. Optică și fizică modernă',type:'tf',
+ text:'Difracția luminii este fenomenul de abatere de la propagarea rectilinie la trecerea luminii prin deschideri înguste sau pe lângă marginea obstacolelor.',
+ opts:['Adevăr','Fals'],c:0,pts:4},
+{s:'5. Optică și fizică modernă',type:'mc',
+ text:'Legea deplasării a lui Wien stabilește că lungimea de undă corespunzătoare maximului spectral al unui corp negru λ<sub>max</sub> și temperatura sa absolută <i>T</i> sunt legate prin:',
+ opts:['λ<sub>max</sub> · <i>T</i>² = <i>b</i>','λ<sub>max</sub> · <i>T</i> = <i>b</i>','λ<sub>max</sub> / <i>T</i> = <i>b</i>','λ<sub>max</sub> = <i>b</i>','λ<sub>max</sub> · <i>T</i>³ = <i>b</i>'],
+ c:1,pts:5},
+{s:'5. Optică și fizică modernă',type:'calc',
+ text:'La experiența lui Young (fante duble), interfrangia benzilor de interferență este <i>i</i> = 1,5 mm, distanța dintre fante este <i>d</i> = 1 mm, iar distanța de la planul fantelor la ecran este <i>D</i> = 3 m. Determinați lungimea de undă λ a luminii utilizate.',
+ opts:['λ = 0,3 μm','λ = 0,5 μm','λ = 0,6 μm','λ = 0,7 μm','λ = 1,5 μm'],
+ c:1,pts:10},
+];
+
+let done=false;
+const totalPts=Q.reduce((a,q)=>a+q.pts,0);
+let curSec='';
+
+function render(){
+  const w=document.getElementById('wrap');
+  let h='';
+  curSec='';
+  Q.forEach((q,i)=>{
+    if(q.s!==curSec){curSec=q.s;h+=`<div class="section-hdr">${q.s}</div>`}
+    const badge=q.type==='calc'
+      ?'<span class="bcalc">Calculator</span>'
+      :q.type==='tf'
+        ?'<span class="btf">Adevăr / Fals</span>'
+        :'';
+    h+=`<div class="item" id="item-${i}">
+      <div class="ih"><span class="inum">Itemul ${i+1}.</span>${badge}</div>
+      <div class="iq">${q.text}</div>
+      <div class="opts">`;
+    q.opts.forEach((o,j)=>{
+      h+=`<label class="opt" id="opt-${i}-${j}" onclick="pick(${i},${j})">
+        <input type="radio" name="q${i}" value="${j}">
+        <span class="olabel">${o}</span>
+      </label>`;
+    });
+    h+=`</div>
+      <div class="ifoot">
+        <span class="ipts">Punctajul oferit pentru item: <strong>${q.pts} puncte</strong></span>
+        <span class="ifeed" id="feed-${i}"></span>
+      </div>
+    </div>`;
+  });
+  w.innerHTML=h;
+}
+
+function pick(qi,oi){
+  if(done)return;
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.remove('sel'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('sel');
+}
+
+function submit(){
+  if(done)return;
+  const ans=Q.map((_,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    return sel?parseInt(sel.value):-1;
+  });
+  const unanswered=ans.filter(a=>a===-1).length;
+  if(unanswered>0&&!confirm(`Ai ${unanswered} item(i) fără răspuns. Continui?`))return;
+  done=true;
+  let score=0;
+  Q.forEach((q,i)=>{
+    const chosen=ans[i];
+    const item=document.getElementById(`item-${i}`);
+    const feed=document.getElementById(`feed-${i}`);
+    const isOk=chosen===q.c;
+    if(isOk)score+=q.pts;
+    item.classList.add(isOk?'graded-ok':'graded-fail');
+    if(chosen>=0){
+      const selOpt=document.getElementById(`opt-${i}-${chosen}`);
+      if(selOpt)selOpt.classList.add(isOk?'good':'bad');
+    }
+    if(!isOk){
+      const corrOpt=document.getElementById(`opt-${i}-${q.c}`);
+      if(corrOpt)corrOpt.classList.add('good');
+    }
+    feed.innerHTML=isOk
+      ?'<span class="ifeed ok">✓ Corect</span>'
+      :'<span class="ifeed fail">✗ Incorect</span>';
+  });
+  const pct=Math.round(score/totalPts*100);
+  const msg=pct>=90?'Excelent! 🎓':pct>=70?'Bine! Continuă să înveți.':pct>=50?'Satisfăcător. Mai exersează.':'Necesită mai multă pregătire.';
+  document.getElementById('snum').textContent=score;
+  document.getElementById('tpts').textContent=totalPts;
+  document.getElementById('smsg').textContent=`${pct}% — ${msg}`;
+  document.getElementById('sbar').style.display='flex';
+  document.getElementById('btn').disabled=true;
+  document.getElementById('sbar').scrollIntoView({behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>
